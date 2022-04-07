@@ -9,9 +9,8 @@ const Input = ({
     return (
         <TextField
             label={label}
-            id="filled-start-adornment"
             
-            variant="outlined"
+            variant="standard"
             {...props}
         />
     )

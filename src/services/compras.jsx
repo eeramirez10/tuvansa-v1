@@ -38,5 +38,6 @@ export const getPdf = async (factura) => {
 
     const body = await resp.arrayBuffer()
 
+
    return body;
 }

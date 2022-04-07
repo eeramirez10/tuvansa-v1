@@ -9,57 +9,30 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { getXml } from '../../services/compras';
-import { CircularProgress, IconButton } from '@mui/material';
-import Input from '../input/Input';
+import { Box, CircularProgress, IconButton } from '@mui/material';
+
+import Input from '../input/Input'
+
 import { styled } from '@mui/material/styles';
 
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ModalMat from '../modal/ModalMat';
-import UploadButton from '../button/UploadButton';
-import { style } from '@mui/system';
+import UploadFile from '../shared/UploadFile';
 
 
-// const columns = [
-//     { id: 'name', label: 'Name', minWidth: 170 },
-//     { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-//     {
-//         id: 'population',
-//         label: 'Population',
-//         minWidth: 170,
-//         align: 'right',
-//         format: (value) => value.toLocaleString('en-US'),
-//     },
-//     {
-//         id: 'size',
-//         label: 'Size\u00a0(km\u00b2)',
-//         minWidth: 170,
-//         align: 'right',
-//         format: (value) => value.toLocaleString('en-US'),
-//     },
-//     {
-//         id: 'density',
-//         label: 'Density',
-//         minWidth: 170,
-//         align: 'right',
-//         format: (value) => value.toFixed(2),
-//     },
-// ];
 
 const Container = styled('div')({
     display: 'flex',
     padding: 9
 })
 
-const UploadContainer = styled('div')({
-    display: 'flex',
-    marginTop: 30
-})
+
 
 
 
 const TableUi = () => {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const [columns, setColumns] = React.useState([]);
     const [rows, setRows] = React.useState([])
@@ -72,7 +45,6 @@ const TableUi = () => {
     const [factura, setFactura] = React.useState('');
 
     const [search, setSearch] = React.useState('');
-
 
 
     React.useEffect(() => {
@@ -111,12 +83,30 @@ const TableUi = () => {
         setModalOpen(true)
     }
     const hadleModalClose = () => {
-        setFactura('')
+
         setModalOpen(false)
     }
 
     const hadleInputChange = ({ target }) => {
-        setSearch(target.value)
+
+        const value = target.value;
+
+        if (value.length > 2) {
+            setSearch(value)
+        }
+
+
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const data = new FormData(e.currentTarget);
+
+        setSearch(data.get('search'))
+
+
+
     }
 
 
@@ -129,14 +119,23 @@ const TableUi = () => {
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
 
                 <Container >
-                    <Input
-                        label='search'
-                        sx={{ marginTop: 1, width: '100%', padding: 1 }}
-                        onChange={hadleInputChange}
-                    />
-                    <UploadButton />
+
+                    <Box onSubmit={handleSubmit} component="form"  style={{ width:'100%'}}>
+
+                        <Input
+                            label='search'
+                            sx={{ marginTop: 1, width: '20%', }}
+                            name="search"
+                            
+                        />
+
+                    </Box>
+
+
 
                 </Container>
+
+
 
                 <TableContainer sx={{ maxHeight: 600 }}>
 
@@ -169,7 +168,7 @@ const TableUi = () => {
 
                                 isLoading ?
 
-                                    <CircularProgress size={150} />
+                                    <CircularProgress size={150} style={{ position: 'relative', marginLeft: '200%', marginTop: 50 }} />
 
                                     :
 
@@ -195,6 +194,7 @@ const TableUi = () => {
                                                                                 ?
                                                                                 <IconButton
                                                                                     onClick={() => hadleModalOpen(row['pdf'])}
+                                                                                    size="small"
                                                                                 >
                                                                                     <PictureAsPdfIcon
 
@@ -216,6 +216,8 @@ const TableUi = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+
+
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 20]}
                     component="div"
@@ -229,9 +231,8 @@ const TableUi = () => {
 
             <ModalMat modalOpen={modalOpen} hadleModalClose={hadleModalClose} factura={factura} />
 
-            <UploadContainer>
-                <UploadButton />
-            </UploadContainer>
+
+            <UploadFile />
 
         </>
 

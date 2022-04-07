@@ -13,9 +13,6 @@ const style = {
     bgcolor: 'background.paper',
     // border: '2px solid #000',
     boxShadow: 24,
-
-    
-    
 };
 
 const ModalMat = ({

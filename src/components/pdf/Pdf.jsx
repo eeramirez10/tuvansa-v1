@@ -14,10 +14,15 @@ const Pdf = ({ factura }) => {
     useEffect(()=>{
 
          getPdf(factura)
-            .then( (file) => setPdfFile(file))
+            .then( (file) => {
+                console.log(file)
+                setPdfFile(file)
+            })
             
 
     },[])
+
+    console.log(pdfFile)
 
 
     return (
@@ -29,12 +34,7 @@ const Pdf = ({ factura }) => {
               
             >
 
-                <iframe
-                    src={ URL.createObjectURL( new Blob([pdfFile], {  type:"application/pdf" })) }
-                  
-                >
-                    <p>This browser does not support PDF!</p>
-                </iframe>
+
             </object>
 
         </div>
