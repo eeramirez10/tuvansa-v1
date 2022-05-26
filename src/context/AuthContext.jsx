@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
 
         const resp = await fetchSinToken('auth/login', '', { email, password  }, 'POST')
 
+        console.log(resp)
+
         const body = await resp.json()
 
 
