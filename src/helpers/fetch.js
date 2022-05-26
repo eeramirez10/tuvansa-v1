@@ -5,9 +5,9 @@ const URI = "http://localhost:3000/api/"
 const URI_PROD = "https://backend-proscai.herokuapp.com/api/"
 export const fetchSinToken = (endpoint,params, data, method = 'GET', signal) => {
 
-    // params = params ? `?${new URLSearchParams(params)}` : '';
+    params = params ? `?${new URLSearchParams(params)}` : '';
 
-    const url = `${URI_PROD}${endpoint}?${new URLSearchParams(params)}` ;
+    const url = `${URI_PROD}${endpoint}${new URLSearchParams(params)}` ;
 
 
     if(method === 'GET'){
