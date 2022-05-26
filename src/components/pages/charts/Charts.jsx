@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
 
 import { Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { getSucursalesVentas } from '../../../services/charts';
 import BasicLine from '../../shared/charts/BasicLine';
 import Column from '../../shared/charts/Column';
+
+import { useAuth } from '../../../hooks/useAuth';
 
 
 const lineOptions = {
@@ -61,13 +63,18 @@ const lineOptions = {
 
 const Charts = () => {
 
+    const { auth } = useAuth();
+
+
     const [options, setOptions] = useState(lineOptions)
 
     const [data, setData] = useState({});
 
-    console.log('charts')
 
     useEffect(() => {
+
+
+
 
 
         getSucursalesVentas()
@@ -75,7 +82,7 @@ const Charts = () => {
 
                 setData(data);
 
-                setOptions( o => ({
+                setOptions(o => ({
                     ...o,
                     series: data
                 }))
@@ -86,8 +93,21 @@ const Charts = () => {
 
     }, [])
 
-    
 
+    if (auth.rol !== 'admin') {
+
+        return (
+            <>
+
+                <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
+                    <Box sx={{ flexGrow: 1 }}>
+                        No tienes permisos para ver esta pagina 
+                    </Box>
+                </Container>
+
+            </>
+        )
+    }
 
     return (
 
@@ -103,7 +123,7 @@ const Charts = () => {
                             <Column data={data} />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                           
+
                         </Grid>
 
                     </Grid>

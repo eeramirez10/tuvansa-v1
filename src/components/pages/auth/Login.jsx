@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -18,6 +18,10 @@ import imageTuvansa from '../../../img/tuvansa.jpeg'
 import { fetchSinToken } from '../../../helpers/fetch';
 import AuthContext from '../../../context/AuthContext';
 
+import { toast } from 'react-toastify';
+import { KeyboardReturnRounded } from '@mui/icons-material';
+import { useAuth } from '../../../hooks/useAuth';
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -35,15 +39,33 @@ function Copyright(props) {
 const theme = createTheme();
 
 
-const Login =  () => {
+const Login = () => {
 
+     const { auth, handleLogin } =  useAuth();
 
+  
 
-    const { auth, handleAuth } = useContext(AuthContext);
+    const [formLogin, setFormLogin] = useState({
+        email:'',
+        password:''
+    });
 
-    console.log(auth)
+    const handleChange = ({target}) => {
 
-    const handleSubmit =  async (event) => {
+        setFormLogin({
+            ...formLogin,
+            [target.name]: target.value
+        })
+       
+    }
+
+    const disabledButton = () => {
+
+    }
+
+    
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -52,19 +74,20 @@ const Login =  () => {
             password: data.get('password'),
         }
 
-        const resp  = await fetchSinToken('auth/login','',form,'POST')
-        
-        const body = await resp.json()
+        if( !form.email || !form.password){
 
-        if(!body.ok){
-            return console.log(body)
+            return toast.error('No debe de dejar los campos vacios', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 2000
+            })
+
         }
 
-        handleAuth(body.user)
-      
+        handleLogin(form.email, form.password)
+
 
     };
-    
+
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
@@ -73,17 +96,18 @@ const Login =  () => {
                     item
                     xs={false}
                     sm={4}
-                    md={7}
+                    md={6}
                     sx={{
-                        backgroundImage:`url(${imageTuvansa})`,
+                        backgroundImage: `url(${imageTuvansa})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                        backgroundSize:'cover'
+                        
+                        
                     }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
                     <Box
                         sx={{
                             my: 8,
@@ -105,8 +129,9 @@ const Login =  () => {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Email o Usuario "
                                 name="email"
+                                onChange={ handleChange  }
                                 autoComplete="email"
                                 autoFocus
                             />
@@ -117,6 +142,7 @@ const Login =  () => {
                                 name="password"
                                 label="Password"
                                 type="password"
+                                onChange={ handleChange  }
                                 id="password"
                                 autoComplete="current-password"
                             />
@@ -129,6 +155,8 @@ const Login =  () => {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+
+                                disabled={ formLogin.email && formLogin.password ? false : true  }
                             >
                                 Sign In
                             </Button>

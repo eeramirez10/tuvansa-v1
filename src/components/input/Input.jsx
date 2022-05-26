@@ -3,6 +3,7 @@ import React from 'react'
 
 const Input = ({
     label,
+    variant="standard",
     ...props
 
 }) => {
@@ -10,7 +11,7 @@ const Input = ({
         <TextField
             label={label}
             
-            variant="standard"
+            variant={variant}
             {...props}
         />
     )

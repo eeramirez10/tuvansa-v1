@@ -327,7 +327,7 @@ const Column = ({
 
   useEffect( () =>{
 
-    console.log(data)
+    
 
     // setOptions( o =>({
     //     ...o,

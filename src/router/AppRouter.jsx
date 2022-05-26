@@ -15,7 +15,7 @@ const AppRouter = () => {
       
     const { auth } = useContext(AuthContext);
 
-    console.log(process.env)
+    
 
 
     return (
@@ -23,9 +23,9 @@ const AppRouter = () => {
             <div>
                 <Switch>
                  
-                    <PublicRoute exact path="/login" component={Login} isLoggedIn={!!auth.uid} /> 
+                    <PublicRoute exact path="/login" component={Login} isLoggedIn={!!auth?.uid} /> 
                 
-                    <PrivateRoute path="/" component={Home} isLoggedIn={!!auth.uid} /> 
+                    <PrivateRoute path="/" component={Home} isLoggedIn={!!auth?.uid} /> 
                    
                     <Redirect  to="/" />
                 </Switch>

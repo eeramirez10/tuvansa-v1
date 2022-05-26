@@ -1,9 +1,14 @@
 
-import { Button, Paper } from '@mui/material'
-import React from 'react'
+import { Button, IconButton, Paper } from '@mui/material'
+import React, { createRef, useContext, useRef } from 'react'
 import { styled } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
 import { fetchFile } from '../../helpers/fetch';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { toast } from 'react-toastify';
+import TableContext from '../../context/TableContext';
+
+
 
 const UploadContainer = styled('div')({
     display: 'flex',
@@ -11,56 +16,84 @@ const UploadContainer = styled('div')({
 
 })
 
-const UploadFile = () => {
+const UploadFile = ({ name }) => {
+
+    const { setFileUploaded } = useContext(TableContext)
 
     const [file, setFile] = React.useState([]);
 
+    const [send, setSend] = React.useState(false)
+
+    const fileInputRef = useRef();
+
     const handleInputFile = ({ target }) => {
         setFile(target.files)
+        setSend(false)
+
+        setFileUploaded(false)
     }
 
-    const fileSubmit = async (e) =>{
-        e.preventDefault();
-        
 
-        const resp = await fetchFile('compras/xml/upload', file);
+    const fileSubmit = async (e) => {
+        e.preventDefault();
+
+        const resp = await fetchFile('embarques', file, name);
+
+        toast.loading()
 
         const body = await resp.json()
+
+        setSend(true)
+
+        setFileUploaded(true)
+
+        toast.success(body.msg,{ position:"bottom-center", hideProgressBar:true, autoClose:1000 })
 
         console.log(body)
 
     }
 
 
+
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: 5 }}>
 
 
-            <UploadContainer>
-                <form onSubmit={fileSubmit} encType="multipart/form-data" >
-                    <label htmlFor="contained-button-file">
-                        <input
+        <form onSubmit={fileSubmit} encType="multipart/form-data" >
 
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                            style={{ display: 'none' }}
-                            onChange={handleInputFile}
-                            name="xml"
-                        />
-                        <Button variant="contained" component="span">
-                            Upload
-                        </Button>
-                    </label>
-                    <Button type='submit' variant="contained" endIcon={<SendIcon />} style={{ marginLeft: 10 }}>
-                        Send
-                    </Button>
+            <input
 
-                </form>
+                type="file"
+                style={{ display: 'none' }}
+                onChange={handleInputFile}
+                name="file"
+                ref={fileInputRef}
+            />
+            <IconButton
+                color="secondary"
+                aria-label="upload file"
+                component="span"
+                size='small'
+                onClick={() => {
+                    fileInputRef.current.click();
+                }}
+            >
+                <AttachFileIcon />
+            </IconButton>
 
-            </UploadContainer>
 
-        </Paper>
+            {
+                !send &&
+                fileInputRef.current?.files.length >= 1 &&
+
+                <IconButton color="primary" aria-label="upload file" component="button" type='submit' size='small'>
+                    <SendIcon />
+                </IconButton>
+            }
+
+        </form>
+
+
+
     )
 }
 

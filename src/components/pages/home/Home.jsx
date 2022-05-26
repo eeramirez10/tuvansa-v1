@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, Link} from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import Toolbar from '@mui/material/Toolbar';
 
 import { Box } from '@mui/material';
@@ -13,17 +13,19 @@ import SideBar from '../../SideBar/SideBar'
 import Gastos from '../../../components/pages/gastos/Gastos';
 import Charts from '../../../components/pages/charts/Charts';
 import { useRouteMatch } from 'react-router-dom';
+import { Embarques } from '../embarques/Embarques';
+import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { TableProvider } from '../../../context/TableContext';
 
 
 const mdTheme = createTheme();
 
 const Home = () => {
 
-  let match = useRouteMatch()
 
-  console.log(match)
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -54,15 +56,23 @@ const Home = () => {
 
 
           <Switch>
-   
 
-            <Route  path="/charts" component={ Charts} />
-             
-           
-            <Route  path="/" component={Gastos} />
-            
+            <TableProvider>
 
-            
+              <Route path="/charts" component={Charts} title="Charts" />
+
+
+              <Route path="/gastos" component={Gastos} />
+
+              <Route path="/embarques" component={Embarques} />
+
+
+            </TableProvider>
+
+
+
+
+
 
 
           </Switch>

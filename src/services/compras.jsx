@@ -1,6 +1,8 @@
 import { fetchSinToken } from "../helpers/fetch";
 
-export const getXml = async (page, rowsPerPage, search) => {
+export const getXml = async (page, rowsPerPage, search, signal) => {
+
+    
 
     const columns = [
         { id: 'fecha', label:'fecha'},
@@ -16,7 +18,7 @@ export const getXml = async (page, rowsPerPage, search) => {
 
     const endpoint = 'compras/xml';
 
-    const resp = await fetchSinToken(endpoint,{ page, size:rowsPerPage, search });
+    const resp = await fetchSinToken(endpoint,{ page, size:rowsPerPage, search },'','GET',signal);
 
     const body = await resp.json();
 
@@ -30,14 +32,23 @@ export const getXml = async (page, rowsPerPage, search) => {
 
 }
 
-export const getPdf = async (factura) => {
+export const getPdf = async (type,fileName) => {
 
-    const endpoint = `compras/pdf/${factura}`;
-
-    const resp = await fetchSinToken(endpoint);
+    const resp = await fetchSinToken(`files/${type}/${fileName}`);
 
     const body = await resp.arrayBuffer()
 
 
    return body;
 }
+
+
+export const getEmbarques = async (page, rowsPerPage, search, signal) =>{
+
+    const resp = await fetchSinToken('embarques',{page, size:rowsPerPage, search},'','GET',signal);
+    const body = await resp.json();
+
+    return body.data;
+
+}
+

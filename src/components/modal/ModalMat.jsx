@@ -18,10 +18,11 @@ const style = {
 const ModalMat = ({
     modalOpen,
     hadleModalClose,
-    factura
+    fileName,
+    type
 }) => {
 
-
+    
     return (
         <div>
 
@@ -33,7 +34,7 @@ const ModalMat = ({
             >
                 <Box sx={style}>
 
-                    <Pdf factura={ factura } />
+                    <Pdf fileName={ fileName } type={type} />
 
                     {/* <Typography id="modal-modal-title" variant="h6" component="h2">
                         Text in a modal

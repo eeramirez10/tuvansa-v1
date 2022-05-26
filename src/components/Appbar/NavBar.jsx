@@ -12,9 +12,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
-import AuthContext from '../../context/AuthContext';
+
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import { useLocation } from 'react-router-dom';
+
 
 
 
@@ -39,16 +42,22 @@ export const AppBar = styled(MuiAppBar, {
 }));
 
 
+const PATHNAME = {
+    '/embarques':'Embarques',
+    '/charts':'Charts',
+    '/gastos':'Gastos'
+}
 
 
 
+const NavBar = ({ open, toggleDrawer }) => {
 
-const NavBar = ({ open, toggleDrawer}) => {
+    const { auth, handleLogout } = useAuth();
 
-    const { auth, handleLogout } = useContext(AuthContext);
-
+    const { pathname } = useLocation();
 
     
+
     return (
 
         <AppBar position="absolute" open={open}>
@@ -76,27 +85,34 @@ const NavBar = ({ open, toggleDrawer}) => {
                     noWrap
                     sx={{ flexGrow: 1 }}
                 >
-                    Dashboard
-                
+                    { PATHNAME[pathname]}
+
                 </Typography>
 
                 <Typography
                     component="h1"
-                    variant="h6"
+                    
                     color="inherit"
                     noWrap
                     sx={{ flexGrow: 1 }}
                 >
-                    {`${auth.name}  ${auth.lastname}` }
-                
+                    {`${auth.name}  ${auth.lastname}`}
+
                 </Typography>
 
 
-                <IconButton  onClick={ handleLogout } color="inherit">
+                <IconButton onClick={handleLogout} color="inherit">
 
-                    <LogoutIcon />
+                    <LogoutIcon  />
 
-                {/* <Badge badgeContent={4} color="secondary">
+                    <Typography
+                        component="span"
+                    >
+                        Logout
+
+                    </Typography>
+
+                    {/* <Badge badgeContent={4} color="secondary">
                         <NotificationsIcon />
                     </Badge>
              */}
