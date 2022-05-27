@@ -274,6 +274,20 @@ const TableUi = () => {
                             </Table>
                         </TableContainer>
 
+                        {/* {
+                            !isLoading &&
+
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 20]}
+                                component="div"
+                                count={count}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+
+                        } */}
 
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 20]}
@@ -284,6 +298,7 @@ const TableUi = () => {
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
+
                     </>
 
 

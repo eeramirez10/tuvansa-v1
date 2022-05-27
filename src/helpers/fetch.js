@@ -9,22 +9,25 @@ export const fetchSinToken = (endpoint, params, data, method = 'GET', signal) =>
 
     console.log(params)
 
-    const url = `${URI_PROD}${endpoint}${params}`;
+    const url = `${URI}${endpoint}${params}`;
 
     console.log(url)
 
-    if (method === 'GET') {
-        return fetch(url, {
-            method,
+    const options = {
+        method,
            
-            headers: {
-                'Content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
-            },
-            ...signal
+        headers: {
+            'Content-type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+        },
+        
+    }
 
-        });
+    console.log(options)
+
+    if (method === 'GET') {
+        return fetch(url,options);
 
     }
 
@@ -49,7 +52,7 @@ export const fetchFile = (endpoint, files, name, method = 'POST',) => {
 
     console.log(endpoint)
 
-    const url = `${URI_PROD}${endpoint}`;
+    const url = `${URI}${endpoint}`;
 
     const formData = new FormData();
 
