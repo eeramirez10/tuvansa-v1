@@ -57,12 +57,15 @@ const Home = () => {
 
           <Switch>
 
+
             <TableProvider>
 
               <Route path="/charts" component={Charts} title="Charts" />
 
 
               <Route path="/gastos" component={Gastos} />
+
+
 
               <Route path="/embarques" component={Embarques} />
 

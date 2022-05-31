@@ -20,6 +20,7 @@ import { styled } from '@mui/material/styles';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ModalMat from '../modal/ModalMat';
 import UploadFile from '../shared/UploadFile';
+import TableContext from '../../context/TableContext';
 
 
 
@@ -34,20 +35,32 @@ const Container = styled('div')({
 
 const TableUi = () => {
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const [columns, setColumns] = React.useState([]);
-    const [rows, setRows] = React.useState([])
-    const [count, setCount] = React.useState(0);
+    const {
+        page,
+        rowsPerPage,
+        search,
+        fileUploaded,
+        count,
+        isLoading,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        setFileUploaded,
+        rowsDB:rows,
+        handleSetTable,
+        hadleSetColumns,
+        handleSearch,
+        columns
+
+    } = React.useContext(TableContext);
+
 
     const [modalOpen, setModalOpen] = React.useState(false);
 
-    const [isLoading, setIsloading] = React.useState(true);
 
     const [factura, setFactura] = React.useState('');
 
-    const [search, setSearch] = React.useState('');
+
 
 
     React.useEffect(() => {
@@ -57,22 +70,18 @@ const TableUi = () => {
         const fetchItems = async () => {
 
 
-
+            console.log(search)
 
             try {
                 const response = await getXml(page, rowsPerPage, search, { signal: controller.signal });
 
                 const { data, columns } = response;
 
-                setColumns(columns)
+               
+                handleSetTable(data.rows,data.total)
 
-                setRows(data.rows);
+                hadleSetColumns(columns)
 
-                setCount(data.total);
-
-
-
-                setIsloading(false)
 
 
             } catch (error) {
@@ -94,15 +103,7 @@ const TableUi = () => {
 
     }, [page, rowsPerPage, search])
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-        setIsloading(true)
-    };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
 
     const hadleModalOpen = (factura) => {
         setFactura(factura)
@@ -113,27 +114,9 @@ const TableUi = () => {
         setModalOpen(false)
     }
 
-    const hadleInputChange = ({ target }) => {
-
-        const value = target.value;
-
-        if (value.length > 2) {
-            setSearch(value)
-        }
-
-
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const data = new FormData(e.currentTarget);
-
-        setSearch(data.get('search'))
 
 
 
-    }
 
 
     return (
@@ -151,7 +134,7 @@ const TableUi = () => {
                 <Container >
 
                     <Box
-                        onSubmit={handleSubmit}
+                        onSubmit={handleSearch}
                         component="form"
                         sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
                     >

@@ -138,7 +138,7 @@ function Row({ row }) {
                 </TableCell>
 
                 <TableCell>
-                    
+
                     <UploadFile name={row.ruta} />
 
                 </TableCell>
@@ -220,8 +220,34 @@ export const TableCollapsible = () => {
         count,
         handleChangePage,
         handleChangeRowsPerPage,
-        rowsDB
+        rowsDB,
+        fileUploaded,
+        handleSetTable
     } = React.useContext(TableContext);
+
+
+
+    React.useEffect(() => {
+
+        let controller = new AbortController()
+
+        const fetchItems = async () => {
+
+
+            const response = await getEmbarques(page, rowsPerPage, search, { signal: controller.signal });
+
+
+
+            handleSetTable(response.rows, response.total)
+
+
+        }
+
+        (async () => await fetchItems())()
+
+        return () => controller?.abort()
+
+    }, [page, rowsPerPage, search, fileUploaded])
 
 
 

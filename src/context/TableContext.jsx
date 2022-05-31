@@ -8,6 +8,8 @@ export const TableProvider = ({ children }) => {
 
     const [rowsDB, setRowsDB] = React.useState([]);
 
+    const [columns, setColumns] = React.useState([]);
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -21,28 +23,20 @@ export const TableProvider = ({ children }) => {
     const [isLoading, setIsLoading] = React.useState(true)
 
 
-    React.useEffect(() => {
+    const handleSetTable = (rows, total) => {
 
-        let controller = new AbortController()
+        setRowsDB(rows);
+        setCount(total)
 
-        const fetchItems = async () => {
-
-
-            const response = await getEmbarques(page, rowsPerPage, search, { signal: controller.signal });
-
-            setRowsDB(response.rows);
-            setCount(response.total)
-
-            setIsLoading(false)
+        setIsLoading(false)
 
 
-        }
+    }
 
-        (async () => await fetchItems())()
+    const hadleSetColumns = (columns) => {
+        setColumns(columns)
+    }
 
-        return () => controller?.abort()
-
-    }, [page, rowsPerPage, search, fileUploaded])
 
 
 
@@ -56,6 +50,17 @@ export const TableProvider = ({ children }) => {
         setPage(0);
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        const data = new FormData(e.currentTarget);
+
+        setSearch(data.get('search'))
+
+    }
+
+
+
 
     const value = {
         page,
@@ -67,9 +72,11 @@ export const TableProvider = ({ children }) => {
         handleChangePage,
         handleChangeRowsPerPage,
         setFileUploaded,
-
-        
-        rowsDB
+        rowsDB,
+        handleSetTable,
+        hadleSetColumns,
+        handleSearch,
+        columns
 
     }
 

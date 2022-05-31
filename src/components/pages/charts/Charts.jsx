@@ -63,7 +63,7 @@ const lineOptions = {
 
 const Charts = () => {
 
-    const { auth } = useAuth();
+    // const { auth } = useAuth();
 
 
     const [options, setOptions] = useState(lineOptions)
@@ -72,8 +72,6 @@ const Charts = () => {
 
 
     useEffect(() => {
-
-
 
 
 
@@ -94,20 +92,20 @@ const Charts = () => {
     }, [])
 
 
-    if (auth.rol !== 'admin') {
+    // if (auth.rol !== 'admin') {
 
-        return (
-            <>
+    //     return (
+    //         <>
 
-                <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
-                    <Box sx={{ flexGrow: 1 }}>
-                        No tienes permisos para ver esta pagina 
-                    </Box>
-                </Container>
+    //             <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
+    //                 <Box sx={{ flexGrow: 1 }}>
+    //                     No tienes permisos para ver esta pagina 
+    //                 </Box>
+    //             </Container>
 
-            </>
-        )
-    }
+    //         </>
+    //     )
+    // }
 
     return (
 
