@@ -138,6 +138,7 @@ function Row({ row }) {
                 </TableCell>
 
                 <TableCell>
+                    
                     <UploadFile name={row.ruta} />
 
                 </TableCell>
@@ -234,6 +235,7 @@ export const TableCollapsible = () => {
                 <>
 
                     <Table aria-label="collapsible table" size="small"  >
+
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell />

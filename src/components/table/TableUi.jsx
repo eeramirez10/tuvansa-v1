@@ -195,26 +195,41 @@ const TableUi = () => {
 
 
 
-                                        {columns.map((column) => (
-                                            <TableCell
-                                                key={column.id}
-                                                align={column.align}
-                                                style={{ minWidth: column.minWidth }}
-                                            >
-                                                {column.label}
-                                            </TableCell>
-                                        ))}
+                                        {columns.map((column) => {
+
+                                            return (
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    style={{ minWidth: column.minWidth }}
+                                                >
+                                                    {column.label}
+                                                </TableCell>
+                                            )
+
+                                        }
+
+
+                                        )
+                                        }
                                     </TableRow>
+
+
+
+
+
                                 </TableHead>
 
                                 {
 
                                     isLoading
                                         ?
-                                        <Paper sx={{ width: '0', height: 612.83 }}>
-                                            <CircularProgress size={150} style={{ position: 'absolute', left: '50%', top: '35%' }} />
+
+                                        <Paper component={'tbody'} sx={{ width: '0', height: 612.83 }}>
+                                            <CircularProgress component={"div"} size={150} style={{ position: 'absolute', left: '50%', top: '35%' }} />
 
                                         </Paper>
+
                                         :
 
                                         <TableBody  >
@@ -227,12 +242,14 @@ const TableUi = () => {
                                                 rows
 
                                                     .map((row) => {
+
+
                                                         return (
-                                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.uid}>
                                                                 {
 
 
-                                                                    columns.map((column) => {
+                                                                    columns.map((column, i) => {
                                                                         const value = row[column.id];
 
 
@@ -244,15 +261,21 @@ const TableUi = () => {
                                                                                         ? column.format(value)
                                                                                         : column.id === 'pdf' && row[column.id]
                                                                                             ?
-                                                                                            <IconButton
-                                                                                                onClick={() => hadleModalOpen(row['pdf'])}
-                                                                                                size="small"
-                                                                                            >
-                                                                                                <PictureAsPdfIcon
 
-                                                                                                    sx={{ color: 'green' }}
-                                                                                                />
-                                                                                            </IconButton>
+                                                                                            <>
+
+                                                                                                <IconButton
+                                                                                                    onClick={() => hadleModalOpen(row['pdf'])}
+                                                                                                    size="small"
+                                                                                                >
+                                                                                                    <PictureAsPdfIcon
+
+                                                                                                        sx={{ color: 'green' }}
+                                                                                                    />
+                                                                                                </IconButton>
+
+                                                                                            </>
+
 
                                                                                             : value
 
@@ -274,7 +297,7 @@ const TableUi = () => {
                             </Table>
                         </TableContainer>
 
-                        {/* {
+                        {
                             !isLoading &&
 
                             <TablePagination
@@ -287,17 +310,9 @@ const TableUi = () => {
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                             />
 
-                        } */}
+                        }
 
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 20]}
-                            component="div"
-                            count={count}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
+
 
                     </>
 

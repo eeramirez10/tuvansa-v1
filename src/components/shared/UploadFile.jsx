@@ -49,7 +49,7 @@ const UploadFile = ({ name }) => {
 
         toast.success(body.msg,{ position:"bottom-center", hideProgressBar:true, autoClose:1000 })
 
-        console.log(body)
+        // console.log(body)
 
     }
 

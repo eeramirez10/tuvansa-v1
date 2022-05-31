@@ -9,7 +9,7 @@ export const fetchSinToken = (endpoint, params, data, method = 'GET', signal) =>
 
     console.log(params)
 
-    const url = `${URI}${endpoint}${params}`;
+    const url = `${URI_PROD}${endpoint}${params}`;
 
     console.log(url)
 
@@ -52,7 +52,7 @@ export const fetchFile = (endpoint, files, name, method = 'POST',) => {
 
     console.log(endpoint)
 
-    const url = `${URI}${endpoint}`;
+    const url = `${URI_PROD}${endpoint}`;
 
     const formData = new FormData();
 
@@ -63,6 +63,11 @@ export const fetchFile = (endpoint, files, name, method = 'POST',) => {
 
     return fetch(url, {
         method,
+        headers: {
+            
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+        },
 
         body: formData,
 
