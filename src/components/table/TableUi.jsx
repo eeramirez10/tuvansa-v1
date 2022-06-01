@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { getXml } from '../../services/compras';
-import { Box, CircularProgress, IconButton } from '@mui/material';
+import { Box, CircularProgress, Grid, IconButton } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -21,6 +21,9 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ModalMat from '../modal/ModalMat';
 import UploadFile from '../shared/UploadFile';
 import TableContext from '../../context/TableContext';
+import { FormatNumber } from '../../helpers/FormatNumber';
+import { ExcelDownload } from '../excel/ExcelDownload';
+import { useSearch } from '../../hooks/useSearch';
 
 
 
@@ -39,20 +42,20 @@ const TableUi = () => {
     const {
         page,
         rowsPerPage,
-        search,
-        fileUploaded,
         count,
-        isLoading,
         handleChangePage,
         handleChangeRowsPerPage,
-        setFileUploaded,
-        rowsDB:rows,
+        rowsDB: rows,
         handleSetTable,
         hadleSetColumns,
-        handleSearch,
         columns
 
     } = React.useContext(TableContext);
+
+
+    const { search, handleSearch } = useSearch();
+
+    const [isLoading, setIsLoading] = React.useState(false);
 
 
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -72,17 +75,19 @@ const TableUi = () => {
 
             console.log(search)
 
+            setIsLoading(true)
+
             try {
                 const response = await getXml(page, rowsPerPage, search, { signal: controller.signal });
 
                 const { data, columns } = response;
 
-               
-                handleSetTable(data.rows,data.total)
+
+                handleSetTable(data.rows, data.total)
 
                 hadleSetColumns(columns)
 
-
+                setIsLoading(false)
 
             } catch (error) {
                 console.log(error)
@@ -130,34 +135,43 @@ const TableUi = () => {
 
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
 
+                <Grid container padding={1} >
 
-                <Container >
+                    <Grid item xs={12} md={6}>
 
-                    <Box
-                        onSubmit={handleSearch}
-                        component="form"
-                        sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
-                    >
+                        <Box
+                            onSubmit={handleSearch}
+                            component="form"
+                            sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+                        >
 
-                        <Input
-                            label='Buscar'
-                            sx={{ width: '20%' }}
-                            name="search"
-                            variant='outlined'
-                            size={'small'}
-                        />
+                            <Input
+                                label='Buscar'
+                                sx={{ width: '50%' }}
+                                name="search"
+                                variant='outlined'
+                                size={'small'}
+                            />
 
-                        <IconButton type="submit" sx={{ p: '10px', marginLeft: 1 }} aria-label="search">
-                            <SearchIcon />
-                        </IconButton>
+                            <IconButton type="submit" sx={{ p: '10px', marginLeft: 1 }} aria-label="search">
+                                <SearchIcon />
+                            </IconButton>
 
-                    </Box>
+                        </Box>
 
-                    <UploadFile />
+                    </Grid>
 
 
+                    <Grid container xs={12} md={6} direction="row" justifyContent="flex-end" alignItems="center"  >
 
-                </Container>
+                        <ExcelDownload dataExport={rows} name={'Gastos'} />
+
+                        <UploadFile />
+
+                    </Grid>
+
+
+                </Grid>
 
 
                 {
@@ -166,6 +180,8 @@ const TableUi = () => {
                     <>
 
                         <TableContainer sx={{ maxHeight: 562.13 }}>
+
+
 
 
 
@@ -260,7 +276,13 @@ const TableUi = () => {
                                                                                             </>
 
 
-                                                                                            : value
+                                                                                            : column.id === 'importe' && row[column.id]
+
+                                                                                                ? <FormatNumber number={row[column.id]} />
+
+                                                                                                : value
+
+
 
 
                                                                                 }

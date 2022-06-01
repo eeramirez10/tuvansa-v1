@@ -11,12 +11,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import Input from '../input/Input';
+import SearchIcon from '@mui/icons-material/Search';
+
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { getEmbarques } from '../../services/compras';
-import { Chip, CircularProgress, TablePagination } from '@mui/material';
+import { Chip, CircularProgress, Grid, TablePagination } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Tooltip from '@mui/material/Tooltip';
@@ -26,6 +29,9 @@ import styled from '@emotion/styled';
 import UploadFile from '../shared/UploadFile';
 import ModalMat from '../modal/ModalMat';
 import TableContext from '../../context/TableContext';
+import { FormatNumber } from '../../helpers/FormatNumber';
+import { useSearch } from '../../hooks/useSearch';
+import { ExcelDownload } from '../excel/ExcelDownload';
 
 
 
@@ -74,7 +80,7 @@ function Row({ row }) {
 
         <>
 
-            <TableRow hover sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableRow hover sx={{ '& > *': { borderBottom: 'unset' }, }}>
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -91,11 +97,11 @@ function Row({ row }) {
                     </IconButton>
                 </TableCell>
 
-                <TableCell component="th" scope="row">{row.factura}</TableCell>
-                <TableCell >{row.remision}</TableCell>
-                <TableCell >{row.ruta}</TableCell>
-                <TableCell>{row.fecha}</TableCell>
-                <TableCell >
+                <TableCell sx={{ fontSize: 12 }} component="th" scope="row">{row.factura}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >{row.remision}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >{row.ruta}</TableCell>
+                <TableCell sx={{ fontSize: 12, }}  >{row.fecha}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >
 
 
                     <Tooltip title={row.nombreCliente} placement="top" style={{ cursor: 'pointer' }}>
@@ -106,10 +112,16 @@ function Row({ row }) {
 
                     </Tooltip>
                 </TableCell>
-                <TableCell >{row.agente}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >{row.agente}</TableCell>
 
-                <TableCell align="right">$ {row.costo}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ fontSize: 12 }} align="right">
+
+
+                    <FormatNumber number={row.costo} />
+
+
+                </TableCell>
+                <TableCell sx={{ fontSize: 12 }} align="right">
                     {
                         row.estado === 'OK' ?
                             <Chip label="Entregado" color="success" size="small" /> :
@@ -117,9 +129,9 @@ function Row({ row }) {
                     }
 
                 </TableCell>
-                <TableCell >{row.estado === 'OK' ? row.fechaFolio : ''}</TableCell>
-                <TableCell >{row.referencia}</TableCell>
-                <TableCell>
+                <TableCell sx={{ fontSize: 12 }} >{row.estado === 'OK' ? row.fechaFolio : ''}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >{row.referencia}</TableCell>
+                <TableCell sx={{ fontSize: 12 }} >
 
                     {
                         row.pdf &&
@@ -172,7 +184,10 @@ function Row({ row }) {
                                             <TableCell>{detalle.remision}</TableCell>
                                             {/* <TableCell align="right">{detalle.druta}</TableCell> */}
                                             <TableCell align="right">
-                                                $ {detalle.costo}
+
+                                                <FormatNumber number={detalle.costo} />
+
+
                                             </TableCell>
                                             {/* <TableCell align="right">
                                                     {detalle.folio}
@@ -215,7 +230,7 @@ export const TableCollapsible = () => {
     const {
         page,
         rowsPerPage,
-        search,
+
         isLoading,
         count,
         handleChangePage,
@@ -224,6 +239,8 @@ export const TableCollapsible = () => {
         fileUploaded,
         handleSetTable
     } = React.useContext(TableContext);
+
+    const { search, handleSearch } = useSearch();
 
 
 
@@ -255,6 +272,45 @@ export const TableCollapsible = () => {
     return (
         <TableContainer component={Paper}>
 
+            <Grid container padding={1} >
+
+                <Grid item xs={12} md={6}>
+
+                    <Box
+                        onSubmit={handleSearch}
+                        component="form"
+                        sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+                    >
+
+                        <Input
+                            label='Buscar'
+                            sx={{ width: '50%' }}
+                            name="search"
+                            variant='outlined'
+                            size={'small'}
+                        />
+
+                        <IconButton type="submit" sx={{ p: '10px', marginLeft: 1 }} aria-label="search">
+                            <SearchIcon />
+                        </IconButton>
+
+                    </Box>
+
+                </Grid>
+                
+                
+                <Grid container xs={12} md={6}  direction="row" justifyContent="flex-end" alignItems="center"  >
+
+                        <ExcelDownload   dataExport={rowsDB} name={'Embarques'} />  
+
+                </Grid>
+
+
+            </Grid>
+
+
+
+
             {
 
 
@@ -285,7 +341,7 @@ export const TableCollapsible = () => {
                             isLoading
                                 ?
 
-                                <Paper sx={{ width:'0',   height:612.83 }}>
+                                <Paper sx={{ width: '0', height: 612.83 }}>
 
                                     < CircularProgress size={150} style={{ position: 'absolute', left: '50%', top: '35%' }} />
                                 </Paper>
@@ -311,14 +367,14 @@ export const TableCollapsible = () => {
                         !isLoading &&
 
                         <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={count}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                            rowsPerPageOptions={[5, 10, 20]}
+                            component="div"
+                            count={count}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
                     }
 
 
