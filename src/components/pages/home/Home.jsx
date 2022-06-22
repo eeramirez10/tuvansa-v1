@@ -12,12 +12,14 @@ import SideBar from '../../SideBar/SideBar'
 
 import Gastos from '../../../components/pages/gastos/Gastos';
 import Charts from '../../../components/pages/charts/Charts';
-import { useRouteMatch } from 'react-router-dom';
-import { Embarques } from '../embarques/Embarques';
-import { useHistory } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { TableProvider } from '../../../context/TableContext';
 
+import { Embarques } from '../embarques/Embarques';
+
+import { TableProvider } from '../../../context/TableContext';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+
+import esLocale from 'date-fns/locale/es'
 
 const mdTheme = createTheme();
 
@@ -60,14 +62,21 @@ const Home = () => {
 
             <TableProvider>
 
-              <Route path="/charts" component={Charts} title="Charts" />
 
-
-              <Route path="/gastos" component={Gastos} />
+              <LocalizationProvider  dateAdapter={AdapterDateFns} adapterLocale={esLocale} >
 
 
 
-              <Route path="/embarques" component={Embarques} />
+                <Route path="/charts" component={Charts} title="Charts" />
+
+
+                <Route path="/gastos" component={Gastos} />
+
+
+
+                <Route path="/embarques" component={Embarques} />
+
+              </LocalizationProvider>
 
 
             </TableProvider>
@@ -85,7 +94,7 @@ const Home = () => {
 
         </Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 

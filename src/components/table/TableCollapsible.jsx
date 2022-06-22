@@ -32,6 +32,7 @@ import TableContext from '../../context/TableContext';
 import { FormatNumber } from '../../helpers/FormatNumber';
 import { useSearch } from '../../hooks/useSearch';
 import { ExcelDownload } from '../excel/ExcelDownload';
+import { BasicMenu } from '../shared/menu/BasicMenu';
 
 
 
@@ -302,6 +303,8 @@ export const TableCollapsible = () => {
                 <Grid container xs={12} md={6}  direction="row" justifyContent="flex-end" alignItems="center"  >
 
                         <ExcelDownload   dataExport={rowsDB} name={'Embarques'} />  
+
+                        <BasicMenu title={'Reporte'} />
 
                 </Grid>
 
