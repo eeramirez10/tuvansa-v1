@@ -5,15 +5,22 @@ import MenuItem from '@mui/material/MenuItem';
 import { RangePicker } from '../datePicker/RangePicker';
 import { Box, Grid } from '@mui/material';
 import { ExcelDownload } from '../../excel/ExcelDownload';
+import { getReporte } from '../../../services/embarques';
+
+import { format } from 'date-fns';
+import { excelExport } from '../../../helpers/excelExport';
+
+
 
 export const BasicMenu = ({ title }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
     const [fechas, setFechas] = React.useState({
-        inicio:null,
-        final:null
+        inicio: null,
+        final: null
     })
+
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -22,12 +29,31 @@ export const BasicMenu = ({ title }) => {
         setAnchorEl(null);
     };
 
-    const handleFechas = (name, value) =>{
+    const handleFechas = (name, value) => {
 
-        setFechas({ ...fechas, [name]:value })
+
+
+        setFechas({ ...fechas, [name]: value })
     }
 
-    console.log(fechas)
+
+    const handleExport = async () => {
+
+        const inicio = format(fechas.inicio, 'yyyy-MM-dd');
+        const final = format(fechas.final,'yyyy-MM-dd' );
+
+        const { data:dataExport } = await getReporte(inicio, final);
+
+        console.log(dataExport)
+
+        excelExport(dataExport,'Reporte de embarques')
+
+         
+            
+
+    }
+
+
 
 
     return (
@@ -50,36 +76,42 @@ export const BasicMenu = ({ title }) => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <Box component="div" sx={{  p:2,  }}  >
+                <Box component="div" sx={{ p: 2, }}  >
 
                     <Grid container spacing={1}   >
 
-                        <Grid  item md={6} xs={12} sx={{display:'flex',}} >
-                            <RangePicker 
-                                label="Inicio" 
-                                sx={{ margin:'0 auto', width:'100%'}} 
-                                size="small" 
-                                name = "inicio"
+                        <Grid item md={6} xs={12} sx={{ display: 'flex', }} >
+                            <RangePicker
+                                label="Inicio"
+                                sx={{ margin: '0 auto', width: '100%' }}
+                                size="small"
+                                name="inicio"
                                 handleFechas={handleFechas}
-                                value={ fechas.inicio}
+                                value={fechas.inicio}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12} sx={{display:'flex'}} >
-                            <RangePicker 
-                                label="Final" 
-                                sx={{ margin:'0 auto', width:'100%'}} 
-                                size="small" 
+                        <Grid item md={6} xs={12} sx={{ display: 'flex' }} >
+                            <RangePicker
+                                label="Final"
+                                sx={{ margin: '0 auto', width: '100%' }}
+                                size="small"
                                 name="final"
                                 handleFechas={handleFechas}
-                                value={ fechas.final}
+                                value={fechas.final}
                             />
                         </Grid>
-                        <Grid item md={12} xs={12}  sx={{display:'flex'}}>
+                        <Grid item md={12} xs={12} sx={{ display: 'flex' }}>
+
+{/* 
                             <ExcelDownload 
                                 sx={{ margin:'0 auto', width:'100%'}} 
                                 size="small" 
-                            />
+                            /> */}
+
+                            <Button sx={{ margin: '0 auto', width: '100%' }} variant='contained' disableElevation onClick={handleExport} > Exportar </Button>
                         </Grid>
 
 

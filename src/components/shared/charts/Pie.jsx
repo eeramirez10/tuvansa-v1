@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -6,65 +6,49 @@ import Drilldown from 'highcharts/modules/drilldown';
 
 Drilldown(Highcharts);
 
-let initialOptions = {
+const initialOptions = {
     chart: {
-        type: 'column'
+        type: 'pie'
     },
     title: {
         text: 'Browser market shares. January, 2018'
     },
     subtitle: {
-        text: ''
+        text: 'Click the slices to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
     },
+
     accessibility: {
         announceNewData: {
             enabled: true
+        },
+        point: {
+            valueSuffix: '%'
         }
     },
-    xAxis: {
-        type: 'category'
-    },
-    yAxis: {
-        title: {
-            text: ''
-        }
 
-    },
-    legend: {
-        enabled: false
-    },
     plotOptions: {
         series: {
-            borderWidth: 0,
             dataLabels: {
                 enabled: true,
-                format: '${point.y:,.0f}'
-            },
-            point: {
-                events: {
-                    click: function () {
-                        console.log(this)
-                    }
-                }
+                format: '{point.name}: {point.y:.1f}%'
             }
-
         }
     },
 
     tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>${point.y:,.0f}</b><br/>'
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
     },
 
     series: [
         {
-            name: "Ventas",
+            name: "Browsers",
             colorByPoint: true,
             data: [
                 {
-                    name: "Mexico",
+                    name: "Chrome",
                     y: 62.74,
-                    drilldown: "Mexico"
+                    drilldown: "Chrome"
                 },
                 {
                     name: "Firefox",
@@ -100,102 +84,83 @@ let initialOptions = {
         }
     ],
     drilldown: {
-        breadcrumbs: {
-            position: {
-                align: 'right'
-            }
-        },
         series: [
             {
-                name: "Mexico",
-                id: "Mexico",
+                name: "Chrome",
+                id: "Chrome",
                 data: [
-                    {
-                        "name": "ISABEL-M",
-                        "y": 14098573
-                    },
-                    {
-                        "name": "JC AGUIRRE",
-                        "y": 3811599
-                    },
-                    {
-                        "name": "ALICIA",
-                        "y": 2350752
-                    },
-                    {
-                        "name": "DANIEL",
-                        "y": 2221454
-                    },
-                    {
-                        "name": "D - J",
-                        "y": 2150839
-                    },
-                    {
-                        "name": "LUCIANA",
-                        "y": 1882003
-                    },
-                    {
-                        "name": "ARTURO NA",
-                        "y": 1347930
-                    },
-                    {
-                        "name": "PAOLA",
-                        "y": 1299353
-                    },
-                    {
-                        "name": "ISABEL",
-                        "y": 825049
-                    },
-                    {
-                        "name": "MARCELA - LORENA",
-                        "y": 531737
-                    },
-
-                    {
-                        "name": "VENTAS GENERALES",
-                        "y": 328362
-                    },
-                    {
-                        "name": "MINERIA",
-                        "y": 271851
-                    },
-                    {
-                        "name": "JOSEFINA",
-                        "y": 218779
-                    },
-                    {
-                        "name": "ALICIA",
-                        "y": 213847
-                    },
-                    {
-                        "name": "MARIO",
-                        "y": 130668
-                    },
-                    {
-                        "name": "LUIS ALFARO",
-                        "y": 107032
-                    },
-                    {
-                        "name": "BEATRIZ",
-                        "y": 91818
-                    },
-                    {
-                        "name": "JORGE",
-                        "y": 65847
-                    },
-                    {
-                        "name": "D - A",
-                        "y": 44248
-                    },
-                    {
-                        "name": "MARTHA",
-                        "y": 32699
-                    },
-                    {
-                        "name": "MIGUEL",
-                        "y": 12526
-                    }
-
+                    [
+                        "v65.0",
+                        0.1
+                    ],
+                    [
+                        "v64.0",
+                        1.3
+                    ],
+                    [
+                        "v63.0",
+                        53.02
+                    ],
+                    [
+                        "v62.0",
+                        1.4
+                    ],
+                    [
+                        "v61.0",
+                        0.88
+                    ],
+                    [
+                        "v60.0",
+                        0.56
+                    ],
+                    [
+                        "v59.0",
+                        0.45
+                    ],
+                    [
+                        "v58.0",
+                        0.49
+                    ],
+                    [
+                        "v57.0",
+                        0.32
+                    ],
+                    [
+                        "v56.0",
+                        0.29
+                    ],
+                    [
+                        "v55.0",
+                        0.79
+                    ],
+                    [
+                        "v54.0",
+                        0.18
+                    ],
+                    [
+                        "v51.0",
+                        0.13
+                    ],
+                    [
+                        "v49.0",
+                        2.16
+                    ],
+                    [
+                        "v48.0",
+                        0.13
+                    ],
+                    [
+                        "v47.0",
+                        0.11
+                    ],
+                    [
+                        "v43.0",
+                        0.17
+                    ],
+                    [
+                        "v29.0",
+                        0.26
+                    ]
                 ]
             },
             {
@@ -340,90 +305,9 @@ let initialOptions = {
     }
 }
 
-const Column = ({ data }) => {
+export const Pie = () => {
+  return (
 
-    const [options, setOptions] = useState(initialOptions);
-
-
-    const updateSeries = () => {
-        setOptions({
-            ...options,
-            series: [
-                {
-                    name: "Ventas",
-                    colorByPoint: true,
-                    data: data.series
-                }
-            ],
-            drilldown: {
-                series: data.seriesDrillDown
-            }
-        })
-    }
-
-
-    useEffect(()=>{
-
-        if(data){
-
-            setOptions({
-                ...options,
-                series:[
-                    {
-                        name: "Ventas",
-                        colorByPoint: true,
-                        data: data?.series
-                    }
-                ],
-                drilldown:{
-                    breadcrumbs: {
-                        position: {
-                            align: 'right'
-                        }
-                    },
-                    series: data?.seriesDrillDown
-                }
-            })
-
-        }
-
-
-    }, [data])
-
-
-    
-
-
-
-    return (
-
-        <>
-
-
-            {
-                data &&
-
-                <HighchartsReact highcharts={Highcharts} options={options} />
-
-
-
-            }
-
-
-
-
-
-
-
-
-
-        </>
-
-
-
-
-
-    )
+    <HighchartsReact highcharts={Highcharts} options={initialOptions} />
+  )
 }
-
-export default Column

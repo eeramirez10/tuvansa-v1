@@ -7,11 +7,11 @@ export const fetchSinToken = (endpoint, params, data, method = 'GET', signal) =>
 
     params = params ? `?${new URLSearchParams(params)}` : '';
 
-    console.log(params)
+    // console.log(params)
 
-    const url = `${URI_PROD}${endpoint}${params}`;
+    const url = `${URI}${endpoint}${params}`;
 
-    console.log(url)
+    // console.log(url)
 
     const options = {
         method,
@@ -24,7 +24,7 @@ export const fetchSinToken = (endpoint, params, data, method = 'GET', signal) =>
         
     }
 
-    console.log(options)
+    // console.log(options)
 
     if (method === 'GET') {
         return fetch(url,options);
@@ -50,9 +50,9 @@ export const fetchFile = (endpoint, files, name, method = 'POST',) => {
 
     endpoint = endpoint === 'compras' ? 'compras/xml/upload' : `embarques/file/upload/EMBARQUES/${name ? name : ''}`
 
-    console.log(endpoint)
+    // console.log(endpoint)
 
-    const url = `${URI_PROD}${endpoint}`;
+    const url = `${URI}${endpoint}`;
 
     const formData = new FormData();
 

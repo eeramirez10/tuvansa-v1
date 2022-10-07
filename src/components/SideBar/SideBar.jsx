@@ -28,16 +28,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
             }),
             boxSizing: 'border-box',
             ...(!open && {
+                display:'block',
                 overflowX: 'hidden',
                 transition: theme.transitions.create('width', {
                     easing: theme.transitions.easing.sharp,
                     duration: theme.transitions.duration.leavingScreen,
                 }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
+                width: theme.spacing(9),
+               
+                [theme.breakpoints.down('sm')]: {
+                    display:'none',
+                    width: drawerWidth,
                 },
             }),
+            '&:hover':{
+                position: 'realtive',
+                whiteSpace: 'nowrap',
+                width: drawerWidth,
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+            }
         },
     }),
 );
@@ -47,7 +59,7 @@ const SideBar = ({ open, toggleDrawer }) => {
 
 
     return (
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} >
             <Toolbar
                 sx={{
                     display: 'flex',
@@ -56,7 +68,7 @@ const SideBar = ({ open, toggleDrawer }) => {
                     px: [1],
                 }}
             >
-                <IconButton onClick={toggleDrawer}>
+                <IconButton onClick={ () => toggleDrawer(false)}>
                     <ChevronLeftIcon />
                 </IconButton>
             </Toolbar>

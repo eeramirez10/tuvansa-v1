@@ -27,10 +27,10 @@ const Home = () => {
 
 
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
-  const toggleDrawer = () => {
-    setOpen(!open);
+  const toggleDrawer = (isOpen = null) => {
+    setOpen(isOpen ? isOpen : !open);
   }
   return (
 
@@ -38,7 +38,7 @@ const Home = () => {
       <Box sx={{ display: 'flex' }} >
         <CssBaseline />
         <NavBar open={open} toggleDrawer={toggleDrawer} />
-        <SideBar open={open} toggleDrawer={toggleDrawer} />
+        <SideBar open={open} toggleDrawer={toggleDrawer} sx={{ display:'none' }}  />
         <Box
           component="main"
           sx={{
@@ -48,7 +48,8 @@ const Home = () => {
                 : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
-            overflow: 'auto'
+            overflow: 'auto',
+            
           }}
 
         >

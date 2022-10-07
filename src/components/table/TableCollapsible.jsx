@@ -302,7 +302,7 @@ export const TableCollapsible = () => {
                 
                 <Grid container xs={12} md={6}  direction="row" justifyContent="flex-end" alignItems="center"  >
 
-                        <ExcelDownload   dataExport={rowsDB} name={'Embarques'} />  
+                        
 
                         <BasicMenu title={'Reporte'} />
 
