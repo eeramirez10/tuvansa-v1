@@ -27,8 +27,12 @@ const Charts = () => {
 
     useEffect(() => {
 
+        if (auth.rol !== 'admin') return
+
         getSucursalesVentas()
             .then(({ data }) => {
+
+                console.log(data)
 
                 setSucursalesData(data)
 
@@ -90,11 +94,11 @@ const Charts = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
 
-                            <BasicLine data={sucursalesData} />
+                            {/* <BasicLine data={sucursalesData} /> */}
 
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Column data={vendedoresData} />
+                            {/* <Column data={vendedoresData} /> */}
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Pie />

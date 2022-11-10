@@ -24,6 +24,7 @@ import TableContext from '../../context/TableContext';
 import { FormatNumber } from '../../helpers/FormatNumber';
 import { ExcelDownload } from '../excel/ExcelDownload';
 import { useSearch } from '../../hooks/useSearch';
+import { useAuth } from '../../hooks/useAuth';
 
 
 
@@ -52,6 +53,8 @@ const TableUi = () => {
 
     } = React.useContext(TableContext);
 
+     const { auth } = useAuth()
+
 
     const { search, handleSearch } = useSearch();
 
@@ -67,6 +70,8 @@ const TableUi = () => {
 
 
     React.useEffect(() => {
+
+        if (auth.rol !== 'admin') return
 
         let controller = new AbortController()
 
@@ -117,6 +122,22 @@ const TableUi = () => {
     const hadleModalClose = () => {
 
         setModalOpen(false)
+    }
+
+
+    if (auth.rol !== 'admin') {
+
+        return (
+            <>
+
+                <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
+                    <Box sx={{ flexGrow: 1 }}>
+                        No tienes permisos para ver esta pagina
+                    </Box>
+                </Container>
+
+            </>
+        )
     }
 
 

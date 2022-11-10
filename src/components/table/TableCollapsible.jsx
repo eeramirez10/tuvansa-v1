@@ -33,6 +33,7 @@ import { FormatNumber } from '../../helpers/FormatNumber';
 import { useSearch } from '../../hooks/useSearch';
 import { ExcelDownload } from '../excel/ExcelDownload';
 import { BasicMenu } from '../shared/menu/BasicMenu';
+import { useTable } from '../../hooks/useTable';
 
 
 
@@ -228,44 +229,61 @@ function Row({ row }) {
 export const TableCollapsible = () => {
 
 
+    // const {
+    //     page,
+    //     rowsPerPage,
+
+    //     isLoading,
+    //     count,
+    //     handleChangePage,
+    //     handleChangeRowsPerPage,
+    //     rowsDB,
+    //     fileUploaded,
+    //     handleSetTable
+    // } = React.useContext(TableContext);
+
+    // const { search, handleSearch } = useSearch();
+
     const {
         page,
         rowsPerPage,
-
         isLoading,
         count,
         handleChangePage,
         handleChangeRowsPerPage,
         rowsDB,
         fileUploaded,
-        handleSetTable
-    } = React.useContext(TableContext);
+        handleSetTable,
+        handleSearch
+    } =  useTable({ table:"embarques"});
 
-    const { search, handleSearch } = useSearch();
-
-
-
-    React.useEffect(() => {
-
-        let controller = new AbortController()
-
-        const fetchItems = async () => {
-
-
-            const response = await getEmbarques(page, rowsPerPage, search, { signal: controller.signal });
+    console.log(rowsDB)
 
 
 
-            handleSetTable(response.rows, response.total)
+    // React.useEffect(() => {
+
+    //     let controller = new AbortController()
+
+    //     const fetchItems = async () => {
+
+    
 
 
-        }
+    //         const response = await getEmbarques(page, rowsPerPage, search, { signal: controller.signal });
 
-        (async () => await fetchItems())()
 
-        return () => controller?.abort()
 
-    }, [page, rowsPerPage, search, fileUploaded])
+    //         handleSetTable(response.rows, response.total)
+
+
+    //     }
+
+    //     (async () => await fetchItems())()
+
+    //     return () => controller?.abort()
+
+    // }, [page, rowsPerPage, search, fileUploaded])
 
 
 
