@@ -51,6 +51,7 @@ export const DimamicTable = () => {
     const handlePrint = useReactToPrint({
         content: () => componetRef.current,
         onAfterPrint: () => handleRow({}),
+        documentTitle:"",
         pageStyle: `
         @page {
             size: auto;
@@ -85,6 +86,8 @@ export const DimamicTable = () => {
 
 
             handlePrint()
+
+            
         }
 
     }, [row])

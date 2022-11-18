@@ -20,14 +20,14 @@ const QrToPrintInventario = ({ componetRef, inventario }) => {
 
 
                     <Grid item md={6} sm={12} sx={{ textAlign: 'center', display: "flex", flexDirection: "column", justifyContent: "center", }} >
-                        <div style={{ fontSize: 45, marginBottom: 100 }} > <strong> {inventario.I2DESCR}  </strong> </div>
-                        <div style={{ fontSize: 55 , marginBottom: 100}}  > <strong> {inventario.IEAN} </strong>  </div>
-                        <div style={{ fontSize: 55 , marginBottom: 100}} > <strong> {inventario.ICOD} </strong>  </div>
+                        <div style={{ fontSize: 45, marginBottom: 50 }} > <strong> {inventario.I2DESCR}  </strong> </div>
+                        <div style={{ fontSize: 55 , marginBottom: 50}}  >  <u> <strong> {inventario.IEAN} </strong>  </u>  </div>
+                        <div style={{ fontSize: 55 , marginBottom: 50}} > <strong> {inventario.ICOD} </strong>  </div>
 
                         {/* <h1> Cantidad : <strong> {inventario.ALMCANT}  </strong>  </h1> */}
                     </Grid>
 
-                    <Grid container sm={12} sx={{ position:'absolute', bottom:60 }} >
+                    <Grid container sm={12} sx={{ position:'absolute', bottom:20}} >
 
                         <Grid container item md={6} sm={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", alignContent: "center", justifyContent: "center" }} >
                             <QRCode value={`inventarios.dyndns.org/inventario/detail/${inventario.ISEQ}` } size={250} />
