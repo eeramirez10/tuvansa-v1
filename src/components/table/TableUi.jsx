@@ -67,7 +67,7 @@ const TableUi = () => {
     const [factura, setFactura] = React.useState('');
 
 
-
+    console.log(columns)
 
     React.useEffect(() => {
 

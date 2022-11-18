@@ -20,6 +20,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
 import esLocale from 'date-fns/locale/es'
+import Inventarios from '../inventarios/Inventarios';
+import InventarioDetalle from '../inventarios/InventarioDetalle';
 
 const mdTheme = createTheme();
 
@@ -68,14 +70,16 @@ const Home = () => {
 
 
 
-                <Route path="/charts" component={Charts} title="Charts" />
-
+                <Route exact path="/charts" component={Charts} title="Charts" />
 
                 <Route path="/gastos" component={Gastos} />
-
-
-
                 <Route path="/embarques" component={Embarques} />
+
+         
+
+                <Route path="/inventarios" component={ Inventarios }/>
+
+                <Route path="/inventario/detail/:idInventario" component={ InventarioDetalle }/>
 
               </LocalizationProvider>
 

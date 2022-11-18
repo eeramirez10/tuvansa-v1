@@ -28,20 +28,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
             }),
             boxSizing: 'border-box',
             ...(!open && {
-                display:'block',
+                display: 'block',
                 overflowX: 'hidden',
                 transition: theme.transitions.create('width', {
                     easing: theme.transitions.easing.sharp,
                     duration: theme.transitions.duration.leavingScreen,
                 }),
                 width: theme.spacing(9),
-               
+
                 [theme.breakpoints.down('sm')]: {
-                    display:'none',
+                    display: 'none',
                     width: drawerWidth,
                 },
             }),
-            '&:hover':{
+            '&:hover': {
                 position: 'realtive',
                 whiteSpace: 'nowrap',
                 width: drawerWidth,
@@ -68,13 +68,13 @@ const SideBar = ({ open, toggleDrawer }) => {
                     px: [1],
                 }}
             >
-                <IconButton onClick={ () => toggleDrawer(false)}>
+                <IconButton onClick={() => toggleDrawer(false)}>
                     <ChevronLeftIcon />
                 </IconButton>
             </Toolbar>
             <Divider />
             <List component="nav">
-                { mainListItems }
+                {mainListItems}
                 <Divider sx={{ my: 1 }} />
 
                 {/* {secondaryListItems} */}

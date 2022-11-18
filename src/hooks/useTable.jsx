@@ -9,6 +9,7 @@ export const useTable = ({table}) => {
     const { rowsDB, setRowsDB } = useContext(TableContext);
 
 
+
     const [columns, setColumns] = React.useState([]);
 
     const [page, setPage] = React.useState(0);
@@ -17,6 +18,8 @@ export const useTable = ({table}) => {
     const [fileUploaded, setFileUploaded] = React.useState(false);
 
     const [search, setSearch] = React.useState('');
+
+    const [row, setRow] = React.useState({})
 
 
     const [count, setCount] = React.useState(0);
@@ -92,6 +95,11 @@ export const useTable = ({table}) => {
 
     }
 
+    const handleRow = (row) => {
+        setRow(row)
+
+    }
+
     return {
         page,
         rowsPerPage,
@@ -102,6 +110,8 @@ export const useTable = ({table}) => {
         handleChangePage,
         handleChangeRowsPerPage,
         setFileUploaded,
+        handleRow,
+        row,
         rowsDB,
         handleSetTable,
         hadleSetColumns,

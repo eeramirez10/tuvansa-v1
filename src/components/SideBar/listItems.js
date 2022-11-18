@@ -37,6 +37,13 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Embarques" />
         </ListItemButton>
+
+        <ListItemButton  component={ Link } to="/inventarios">
+            <ListItemIcon>
+                <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="inventarios" />
+        </ListItemButton>
 {/* 
         <ListItemButton>
             <ListItemIcon>
