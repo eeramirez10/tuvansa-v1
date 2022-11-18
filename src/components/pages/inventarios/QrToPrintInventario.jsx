@@ -27,9 +27,11 @@ const QrToPrintInventario = ({ componetRef, inventario }) => {
                         {/* <h1> Cantidad : <strong> {inventario.ALMCANT}  </strong>  </h1> */}
                     </Grid>
 
-                    <Grid item sm={12} sx={{ position:"absolute", bottom: 20, width:"100%" }}  >
+                    <Grid item sm={12} md={12} sx={{ textAlign:"center", display:"flex", justifyContent:"center", alignContent:"center", alignItems:"center"  }} >
 
-                        <div style={{ textAlign: 'center', display: "flex", flexDirection: "row", justifyContent: "center", alignItems:"center", alignContent:"center",  }} >
+                        <QRCode value={`inventarios.dyndns.org/inventario/detail/${inventario.ISEQ}`} size={300} />
+                        {/* 
+                        <div >
 
 
                             <Grid container item md={12} sm={12}  >
@@ -63,10 +65,10 @@ const QrToPrintInventario = ({ componetRef, inventario }) => {
 
 
 
-                            </Grid>
+                            </Grid> 
 
 
-                        </div>
+                        </div> */}
 
 
 
