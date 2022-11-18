@@ -16,52 +16,58 @@ const QrToPrintInventario = ({ componetRef, inventario }) => {
 
             <Paper component="div" >
 
-                <Grid container spacing={1} ref={componetRef} sx={{ padding: 5 }}  >
+                <Grid container spacing={1} ref={componetRef} sx={{ padding: 2 }}  >
 
 
                     <Grid item md={6} sm={12} sx={{ textAlign: 'center', display: "flex", flexDirection: "column", justifyContent: "center", }} >
-                        <div style={{ fontSize: 45, marginBottom: 50 }} > <strong> {inventario.I2DESCR}  </strong> </div>
-                        <div style={{ fontSize: 55 , marginBottom: 50}}  >  <u> <strong> {inventario.IEAN} </strong>  </u>  </div>
-                        <div style={{ fontSize: 55 , marginBottom: 50}} > <strong> {inventario.ICOD} </strong>  </div>
+                        <div style={{ fontSize: 45, marginBottom: 30 }} > <strong> {inventario.I2DESCR}  </strong> </div>
+                        <div style={{ fontSize: 55, marginBottom: 30 }}  >  <u> <strong> {inventario.IEAN} </strong>  </u>  </div>
+                        <div style={{ fontSize: 55, marginBottom: 30 }} > <strong> {inventario.ICOD} </strong>  </div>
 
                         {/* <h1> Cantidad : <strong> {inventario.ALMCANT}  </strong>  </h1> */}
                     </Grid>
 
-                    <Grid container sm={12} sx={{ position:'absolute', bottom:20}} >
+                    <Grid item sm={12} sx={{ position:"absolute", bottom: 20, width:"100%" }}  >
 
-                        <Grid container item md={6} sm={6} sx={{ display: "flex", flexDirection: "column", alignItems: "center", alignContent: "center", justifyContent: "center" }} >
-                            <QRCode value={`inventarios.dyndns.org/inventario/detail/${inventario.ISEQ}` } size={250} />
-
-                        </Grid>
+                        <div style={{ textAlign: 'center', display: "flex", flexDirection: "row", justifyContent: "center", alignItems:"center", alignContent:"center",  }} >
 
 
+                            <Grid container item md={12} sm={12}  >
+                                <QRCode value={`inventarios.dyndns.org/inventario/detail/${inventario.ISEQ}`} size={250} />
+                            </Grid>
 
-                        <Grid item md={6} sm={6} sx={{ display: "flex", flexDirection: "column", alignItems: "left", alignContent: "center", justifyContent: "center" }} >
-                            <div style={{ display: "flex", }} >
-                                <div style={{ fontSize: 40 }} > <strong> Conteo 1 </strong>  </div>
-                                <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
-                            </div>
-
-                            <div style={{ display: "flex", }}>
-
-                                <div style={{ fontSize: 40 }}  > <strong> Conteo 2 </strong>  </div>
-                                <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
-
-                            </div>
+                            <Grid item md={12} sm={12} sx={{ display: "flex", flexDirection: "column", alignItems: "center", alignContent: "center", justifyContent: "center", }} >
 
 
-                            <div style={{ display: "flex", }}>
+                                <div style={{ display: "flex", }} >
+                                    <div style={{ fontSize: 40 }} > <strong> Conteo 1 </strong>  </div>
+                                    <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
+                                </div>
 
-                                <div style={{ fontSize: 40 }}  > <strong> Conteo 3 </strong>  </div>
-                                <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
+                                <div style={{ display: "flex",}}>
 
-                            </div>
+                                    <div style={{ fontSize: 40 }}  > <strong> Conteo 2 </strong>  </div>
+                                    <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
+
+                                </div>
+
+
+                                <div style={{ display: "flex", }}>
+
+                                    <div style={{ fontSize: 40 }}  > <strong> Conteo 3 </strong>  </div>
+                                    <input type="text" name="" id="" style={{ border: 'none', borderBottom: "2px solid black", marginLeft: 10 }} />
+
+                                </div>
 
 
 
 
 
-                        </Grid>
+                            </Grid>
+
+
+                        </div>
+
 
 
                     </Grid>
