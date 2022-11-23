@@ -19,7 +19,7 @@ export const useTable = ({table}) => {
 
     const [search, setSearch] = React.useState('');
 
-    const [row, setRow] = React.useState({})
+    const [row, setRow] = React.useState([])
 
 
     const [count, setCount] = React.useState(0);
@@ -37,6 +37,8 @@ export const useTable = ({table}) => {
 
                 const body = await resp.json();
 
+                // console.log(body.data.total)
+
                 setRowsDB(body.data.rows)
 
                 setCount(body.data.total)
@@ -52,7 +54,9 @@ export const useTable = ({table}) => {
 
         return () => controller?.abort()
 
-    },[page,rowsPerPage,search,setRowsDB, table])
+    },[page,rowsPerPage,search,setRowsDB,count, table])
+
+        
 
 
 
@@ -93,10 +97,12 @@ export const useTable = ({table}) => {
 
         setSearch(data.get('search'))
 
+        
+
     }
 
     const handleRow = (row) => {
-        setRow(row)
+        setRow( row ?  row : [])
 
     }
 

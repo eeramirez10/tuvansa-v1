@@ -1,9 +1,9 @@
-import { Button, Container, Grid, Paper } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react'
+import { Button, Container,  TextField } from '@mui/material';
+import React, { useEffect,  useState } from 'react'
 import { useParams } from 'react-router-dom';
-import QRCode from "react-qr-code"
+
 import { fetchSinToken } from '../../../helpers/fetch';
-import { useReactToPrint } from 'react-to-print';
+
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,33 +19,13 @@ const InventarioDetalle = () => {
 
     const [inventario, setInventario] = useState({})
 
-    const componetRef = useRef(null);
 
-    const handlePrint = useReactToPrint({
-        content: () => componetRef.current,
-        pageStyle: `
-        @page {
-            size: auto;
-            
-          }
 
-          @media all {
-            .pagebreak {
-              display: none;
-            }
-          }
-        
-          @media print {
-            .pagebreak {
-              page-break-before: always;
-            }
-          }
-        
-        `,
-        removeAfterPrint: true,
-        copyStyles: true
+    const [value, setValue] = useState('')
 
-    })
+    const handleChange = ({ target }) => {
+        setValue(target.setValue)
+    }
 
 
     useEffect(() => {
@@ -71,42 +51,63 @@ const InventarioDetalle = () => {
     return (
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
 
-            <Paper component="div" >
-
-                <Grid container spacing={1} ref={componetRef}   >
-
-
-                    <Grid item md={6} sm={12}  >
-
-                        <Card sx={{ minWidth: 275 }}>
-                            <CardContent>
-                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                    {inventario.I2DESCR}
-                                </Typography>
-
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Card >
+                <CardContent>
+                    <Typography color="text.secondary" component="h1" sx={{ mb: 3 }} >
+                        {inventario.I2DESCR}
+                    </Typography>
+                    {/* 
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary" component="span">
                                     {inventario.ICOD}
 
-                                </Typography>
-                                <Typography variant="h5" component="div">
-                                    {inventario.IEAN}
-                                </Typography>
-                                <Typography variant="body2">
+                                </Typography> */}
+                    <Typography component="div" sx={{ mb: 3 }}>
+                        {inventario.IEAN}
+                    </Typography>
+                    <Typography color="text.secondary">
+                        Existencia en proscai: {inventario.ALMCANT}
+                    </Typography>
+                    <Typography color="text.secondary" sx={{ mb: 3 }}>
+                        Ultimo conteo: {inventario.ALMCANT}
+                    </Typography>
+                    <Typography component="div" >
 
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
+                        <Box
+                            component="form"
+                            sx={{
+                                '& .MuiTextField-root': { width: '25ch' },
 
-                    </Grid>
+                            }}
+                            noValidate
+                            autoComplete='off'
+                        >
+                            <Box 
+                                component="div"  
+                                sx={{ display:"flex" }}
+                            >
+                                <TextField
+                                    id="outlined-multiline-flexible"
+                                    label="Conteo"
+                                    multiline
+                                    maxRows={4}
+                                    value={value}
+                                    onChange={handleChange}
+                                />
+
+                                <Button variant='contained' size="small">guardar</Button>
+
+                            </Box>
 
 
+                        </Box>
 
-                </Grid>
+                    </Typography>
+                </CardContent>
+                <CardActions>
 
-            </Paper>
+                </CardActions>
+            </Card>
+
 
 
         </Container>
