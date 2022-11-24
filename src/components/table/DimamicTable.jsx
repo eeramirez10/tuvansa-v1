@@ -16,7 +16,7 @@ import { useReactToPrint } from 'react-to-print';
 import { useEffect } from 'react';
 
 const columns = [
-    { id: "ISEQ", label: 'iseq', minWidth: 170, align: 'left',},
+    { id: "ISEQ", label: 'iseq', minWidth: 170, align: 'left', },
     { id: "ICOD", label: 'codigo', minWidth: 170, align: 'right' },
     { id: "IEAN", label: 'ean', minWidth: 170, align: 'right' },
     { id: "I2DESCR", label: 'descripcion', minWidth: 170, align: 'right' },
@@ -51,11 +51,11 @@ export const DimamicTable = () => {
     const handlePrint = useReactToPrint({
         content: () => componetRef.current,
         onAfterPrint: () => handleRow(),
-        documentTitle:"",
+        documentTitle: "",
         // pageStyle: `
         // @page {
         //     size: auto;
-            
+
         //   }
 
         //   @media all {
@@ -63,13 +63,13 @@ export const DimamicTable = () => {
         //       display: none;
         //     }
         //   }
-        
+
         //   @media print {
         //     .pagebreak {
         //       page-break-before: always;
         //     }
         //   }
-        
+
         // `,
         removeAfterPrint: true,
         copyStyles: true
@@ -81,9 +81,9 @@ export const DimamicTable = () => {
     useEffect(() => {
 
 
-        if(row.length > 0 ){
+        if (row.length > 0) {
 
-            
+
             handlePrint()
         }
 
@@ -98,7 +98,7 @@ export const DimamicTable = () => {
         <>
             <SearchTable />
 
-            <Button variant='contained' style={{ display:'block', margin:'0 auto' }}  onClick={()=> handleRow(rowsDB) } > Imprimir vista </Button>
+            <Button variant='contained' style={{ display: 'block', margin: '0 auto' }} onClick={() => handleRow(rowsDB)} > Imprimir vista </Button>
 
             {
                 isLoading
@@ -204,7 +204,7 @@ export const DimamicTable = () => {
                             </Table>
                         </TableContainer>
 
-                        { console.log(count) }
+                        {console.log(count)}
 
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 20, 50]}
@@ -228,10 +228,10 @@ export const DimamicTable = () => {
 
             {
 
-                
+                (row.length > 0) &&
 
 
-                <QrToPrintInventario componetRef={componetRef} inventarios={ row} />
+                < QrToPrintInventario componetRef={componetRef} inventarios={row} />
             }
 
 
