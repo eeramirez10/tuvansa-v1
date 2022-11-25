@@ -2,7 +2,6 @@ import { Button, Container,  TextField } from '@mui/material';
 import React, { useEffect,  useState } from 'react'
 import { useParams } from 'react-router-dom';
 
-import { fetchSinToken } from '../../../helpers/fetch';
 
 
 import Box from '@mui/material/Box';
@@ -10,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { fetchConToken, fetchSinToken } from '../../../helpers/fetch';
 
 
 
@@ -30,7 +30,7 @@ const InventarioDetalle = () => {
 
     useEffect(() => {
 
-        fetchSinToken(`inventarios/detail/${idInventario}`, '', '', "GET")
+        fetchConToken(`inventarios/detail/${idInventario}`, '', '', "GET")
             .then(async (resp) => {
                 const body = await resp.json()
 
@@ -44,7 +44,19 @@ const InventarioDetalle = () => {
 
     }, [idInventario]);
 
-    console.log(inventario)
+   
+
+    const handleSubmit = (e) => {
+
+        e.preventDefault()
+        console.log(inventario);
+
+
+        fetchConToken("inventarios",'',inventario,'POST')
+            .then( resp => resp.json())
+            .then( console.log)
+
+    }
 
 
 
@@ -80,6 +92,7 @@ const InventarioDetalle = () => {
                             }}
                             noValidate
                             autoComplete='off'
+                            onSubmit={ handleSubmit}
                         >
                             <Box 
                                 component="div"  
@@ -94,7 +107,7 @@ const InventarioDetalle = () => {
                                     onChange={handleChange}
                                 />
 
-                                <Button variant='contained' size="small">guardar</Button>
+                                <Button variant='contained' size="small" type='submit'>guardar</Button>
 
                             </Box>
 

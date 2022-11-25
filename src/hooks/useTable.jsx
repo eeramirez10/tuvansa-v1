@@ -1,9 +1,11 @@
+import { ImportContactsOutlined } from '@mui/icons-material';
 import React, { useEffect } from 'react'
 import { useContext } from 'react';
+import { toast } from 'react-toastify';
 import TableContext from '../context/TableContext';
-import { fetchSinToken } from '../helpers/fetch';
+import { fetchConToken, fetchSinToken } from '../helpers/fetch';
 
-export const useTable = ({table}) => {
+export const useTable = ({ table }) => {
 
 
     const { rowsDB, setRowsDB } = useContext(TableContext);
@@ -26,18 +28,29 @@ export const useTable = ({table}) => {
 
     const [isLoading, setIsLoading] = React.useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         let controller = new AbortController();
 
         setIsLoading(true)
 
-        fetchSinToken(table, {page, size:rowsPerPage, search},'','GET',{signal: controller.signal})
-            .then( async (resp) =>{
+         fetchConToken(table, { page, size: rowsPerPage, search }, '', 'GET', { signal: controller.signal })
+            .then(resp => resp.json())
+            .then(async (body) => {
 
-                const body = await resp.json();
+
 
                 // console.log(body.data.total)
+
+
+                if (!body.ok) {
+
+                    setIsLoading(false)
+                    
+                    return toast.error(body.msg);
+
+
+                }
 
                 setRowsDB(body.data.rows)
 
@@ -45,7 +58,7 @@ export const useTable = ({table}) => {
 
                 setIsLoading(false)
 
-            }).catch( e => {
+            }).catch(e => {
 
                 console.log(e)
 
@@ -54,9 +67,9 @@ export const useTable = ({table}) => {
 
         return () => controller?.abort()
 
-    },[page,rowsPerPage,search,setRowsDB,count, table])
+    }, [page, rowsPerPage, search, setRowsDB, count, table])
 
-        
+
 
 
 
@@ -97,12 +110,12 @@ export const useTable = ({table}) => {
 
         setSearch(data.get('search'))
 
-        
+
 
     }
 
     const handleRow = (row) => {
-        setRow( row ?  row : [])
+        setRow(row ? row : [])
 
     }
 
