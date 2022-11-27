@@ -41,15 +41,19 @@ export const useTable = ({ table }) => {
 
 
                 // console.log(body.data.total)
+                setIsLoading(false);
 
+                if (!body.ok && !body.token) {
 
-                if (!body.ok) {
-
-                    setIsLoading(false)
                     
-                    return toast.error(body.msg);
+
+                    return toast.error("Debe de iniciar sesion nuevamente");
 
 
+                }
+
+                if(!body.ok){
+                    return toast.error("Hubo un error, hable con el administrador");
                 }
 
                 setRowsDB(body.data.rows)

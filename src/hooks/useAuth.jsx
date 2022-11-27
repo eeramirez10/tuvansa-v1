@@ -65,6 +65,9 @@ export const useAuth = () => {
 
             const body = await resp.json();
 
+            if(!body.ok && body.msg === "Token no válido") return handleLogout();
+              
+
             localStorage.setItem('token', body.token);
             
 

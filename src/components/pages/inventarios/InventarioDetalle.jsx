@@ -24,7 +24,9 @@ const InventarioDetalle = () => {
     const [value, setValue] = useState('')
 
     const handleChange = ({ target }) => {
-        setValue(target.setValue)
+
+       
+        setValue(target.value)
     }
 
 
@@ -51,8 +53,10 @@ const InventarioDetalle = () => {
         e.preventDefault()
         console.log(inventario);
 
+        console.log(value)
 
-        fetchConToken("inventarios",'',inventario,'POST')
+
+        fetchConToken("inventarios",'',{inventario, conteo: value},'POST')
             .then( resp => resp.json())
             .then( console.log)
 
