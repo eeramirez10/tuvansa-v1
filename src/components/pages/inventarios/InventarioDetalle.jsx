@@ -1,6 +1,8 @@
-import { Button, Container,  TextField } from '@mui/material';
-import React, { useEffect,  useState } from 'react'
+import { Button, Container, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+
+import Moment from 'react-moment';
 
 
 
@@ -10,6 +12,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { fetchConToken, fetchSinToken } from '../../../helpers/fetch';
+import { toast } from 'react-toastify';
 
 
 
@@ -19,46 +22,88 @@ const InventarioDetalle = () => {
 
     const [inventario, setInventario] = useState({})
 
+    const [conteos, setConteos] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false)
+
 
 
     const [value, setValue] = useState('')
 
     const handleChange = ({ target }) => {
 
-       
+
         setValue(target.value)
     }
 
 
     useEffect(() => {
 
+
         fetchConToken(`inventarios/detail/${idInventario}`, '', '', "GET")
             .then(async (resp) => {
+
+
+
                 const body = await resp.json()
 
                 if (!body.ok) return console.log(body);
-                console.log(body.inventario)
+
 
                 setInventario(body.inventario)
-            })
+
+
+            });
+
+
+        fetchConToken(`inventarios/conteo/${idInventario}`, '', '', "GET")
+            .then(resp => resp.json())
+            .then(body => {
+                const { conteos } = body;
+
+                setConteos([...conteos])
+            });
 
 
 
     }, [idInventario]);
 
-   
+
+
+
 
     const handleSubmit = (e) => {
+        e.preventDefault();
 
-        e.preventDefault()
-        console.log(inventario);
+        if(!value) return toast.error('El conteo puede ir vacio',{ position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000  });
 
-        console.log(value)
+        if(!Number(value)) return toast.error('Solo Valores Numericos',{ position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000  });
+
+        setIsLoading(true)
 
 
-        fetchConToken("inventarios",'',{inventario, conteo: value},'POST')
-            .then( resp => resp.json())
-            .then( console.log)
+        const createUpdateInventory =
+
+            fetchConToken("inventarios", '', { inventario, conteo: value }, 'POST')
+                .then(resp => resp.json())
+                .then(body => {
+                    const { conteos } = body;
+
+                    setConteos([...conteos])
+
+                    setValue('');
+
+                    setIsLoading(false)
+
+
+                })
+
+
+        toast.promise(createUpdateInventory,
+            { pending: 'Guardando', success: 'guardado correctamente 👌', error: 'Hubo un error 🤯' },
+            { position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000 }
+        )
+
 
     }
 
@@ -80,12 +125,45 @@ const InventarioDetalle = () => {
                     <Typography component="div" sx={{ mb: 3 }}>
                         {inventario.IEAN}
                     </Typography>
-                    <Typography color="text.secondary">
+                    <Typography sx={{ mb: 3 }}>
                         Existencia en proscai: {inventario.ALMCANT}
                     </Typography>
-                    <Typography color="text.secondary" sx={{ mb: 3 }}>
-                        Ultimo conteo: {inventario.ALMCANT}
-                    </Typography>
+
+                    {
+                        conteos.map((conteo, i) => {
+
+
+
+                            return <Typography
+                                key={i}
+                                color="text.secondary"
+                                sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}
+                            >
+
+                                <div>
+
+                                    <strong> Conteo {i + 1}: {conteo.cantidad}</strong>
+
+                                </div>
+
+                                <div>
+
+                                    {conteo.name}
+
+                                </div>
+
+                                <div>
+
+                                    <Moment format='DD/MM/YYYY HH:ss ' date={conteo.createdAt} />
+
+                                </div>
+
+
+                            </Typography>
+                        })
+                    }
+
+
                     <Typography component="div" >
 
                         <Box
@@ -96,11 +174,11 @@ const InventarioDetalle = () => {
                             }}
                             noValidate
                             autoComplete='off'
-                            onSubmit={ handleSubmit}
+                            onSubmit={handleSubmit}
                         >
-                            <Box 
-                                component="div"  
-                                sx={{ display:"flex" }}
+                            <Box
+                                component="div"
+                                sx={{ display: "flex" }}
                             >
                                 <TextField
                                     id="outlined-multiline-flexible"
@@ -111,7 +189,14 @@ const InventarioDetalle = () => {
                                     onChange={handleChange}
                                 />
 
-                                <Button variant='contained' size="small" type='submit'>guardar</Button>
+                                <Button
+                                    variant='contained'
+                                    size="small"
+                                    type='submit'
+                                    disabled = {isLoading}
+                                >
+                                    guardar
+                                </Button>
 
                             </Box>
 

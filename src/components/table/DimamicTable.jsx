@@ -204,7 +204,6 @@ export const DimamicTable = () => {
                             </Table>
                         </TableContainer>
 
-                        {console.log(count)}
 
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 20, 50]}
