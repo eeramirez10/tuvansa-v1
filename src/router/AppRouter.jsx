@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react'
 
-import { BrowserRouter as Router, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect, useRouteMatch, useParams, useLocation, useHistory } from "react-router-dom";
 import Login from '../components/pages/auth/Login';
 import Home from '../components/pages/home/Home';
 
@@ -18,7 +18,6 @@ const AppRouter = () => {
 
     useEffect(() => {
 
-       
         checkAuthToken()
 
     }, [checkAuthToken])

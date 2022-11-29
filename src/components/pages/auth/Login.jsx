@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -21,6 +21,7 @@ import AuthContext from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { KeyboardReturnRounded } from '@mui/icons-material';
 import { useAuth } from '../../../hooks/useAuth';
+import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -42,6 +43,19 @@ const theme = createTheme();
 const Login = () => {
 
      const { auth, handleLogin } =  useAuth();
+
+    
+
+     const params = useParams ();
+
+    const location = useLocation();
+
+
+    useEffect(() =>{
+
+        console.log(params)
+
+    })
 
   
 

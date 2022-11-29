@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useTable } from '../../hooks/useTable';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import QrToPrintInventario from '../pages/inventarios/QrToPrintInventario';
 import { useReactToPrint } from 'react-to-print';
 import { useEffect } from 'react';
@@ -29,6 +29,7 @@ const columns = [
 export const DimamicTable = () => {
 
     const history = useHistory()
+
 
     const {
         rowsDB,
@@ -80,6 +81,7 @@ export const DimamicTable = () => {
 
     useEffect(() => {
 
+       
 
         if (row.length > 0) {
 

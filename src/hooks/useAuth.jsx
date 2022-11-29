@@ -1,15 +1,32 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import AuthContext from "../context/AuthContext";
 import { toast } from 'react-toastify';
 import { fetchConToken, fetchSinToken } from '../helpers/fetch';
+import { useHistory, useLocation } from "react-router-dom";
 
 
 
 
 export const useAuth = () => {
 
+    const location = useLocation();
+
+    const hystory = useHistory();;
+
+
 
     const { auth, setAuth } = useContext(AuthContext);
+
+    useEffect(()=>{
+
+      
+     
+        if(!location.key){
+
+            localStorage.setItem('urlRedirect', location.pathname)
+
+        }
+    },[location])
 
     const handleAuth = (user) => {
 
@@ -43,6 +60,13 @@ export const useAuth = () => {
         })
 
         handleAuth({ ...body.user, token: body.token })
+
+        if(localStorage.getItem('urlRedirect')){
+            hystory.push(localStorage.getItem('urlRedirect'));
+            localStorage.removeItem('urlRedirect')
+        }
+
+        
 
     }
 

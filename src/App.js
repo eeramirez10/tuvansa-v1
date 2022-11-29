@@ -5,6 +5,7 @@ import React from 'react'
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter as Router } from "react-router-dom";
 
 
 import AppRouter from './router/AppRouter';
@@ -17,7 +18,10 @@ const App = () => {
 
     <AuthProvider>
       <ToastContainer />
-      <AppRouter />
+
+      <Router>
+        <AppRouter />
+      </Router>
     </AuthProvider>
 
   );

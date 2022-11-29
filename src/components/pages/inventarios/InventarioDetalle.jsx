@@ -75,9 +75,9 @@ const InventarioDetalle = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if(!value) return toast.error('El conteo puede ir vacio',{ position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000  });
+        if(!value) return toast.error('El conteo no puede ir vacio',{ position: toast.POSITION.TOP_CENTER, autoClose: 2000  });
 
-        if(!Number(value)) return toast.error('Solo Valores Numericos',{ position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000  });
+        if(!Number(value)) return toast.error('Solo Valores Numericos',{ position: toast.POSITION.TOP_CENTER, autoClose: 2000  });
 
         setIsLoading(true)
 
@@ -89,6 +89,8 @@ const InventarioDetalle = () => {
                 .then(body => {
                     const { conteos } = body;
 
+                    console.log(conteos)
+
                     setConteos([...conteos])
 
                     setValue('');
@@ -97,11 +99,12 @@ const InventarioDetalle = () => {
 
 
                 })
+                .catch(console.log)
 
 
         toast.promise(createUpdateInventory,
             { pending: 'Guardando', success: 'guardado correctamente 👌', error: 'Hubo un error 🤯' },
-            { position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000 }
+            { position: toast.POSITION.TOP_CENTER, autoClose: 2000 }
         )
 
 
@@ -140,7 +143,7 @@ const InventarioDetalle = () => {
                                 sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}
                             >
 
-                                <div>
+                                <div style={{widht:200}}>
 
                                     <strong> Conteo {i + 1}: {conteo.cantidad}</strong>
 
