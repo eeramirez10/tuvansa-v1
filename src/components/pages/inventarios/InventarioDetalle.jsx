@@ -20,7 +20,9 @@ const InventarioDetalle = () => {
 
     const { idInventario } = useParams();
 
-    const [inventario, setInventario] = useState({})
+    const [inventario, setInventario] = useState({});
+
+    const [inventarioDB, setInventarioDB] = useState({ PAUSADO:false})
 
     const [conteos, setConteos] = useState([]);
 
@@ -43,17 +45,21 @@ const InventarioDetalle = () => {
         fetchConToken(`inventarios/detail/${idInventario}`, '', '', "GET")
             .then(async (resp) => {
 
-
-
                 const body = await resp.json()
 
                 if (!body.ok) return console.log(body);
 
+                setInventario(body.inventario);
 
-                setInventario(body.inventario)
+                if(body.inventarioDB){
+                    setInventarioDB(body.inventarioDB)
+                }
+
+                
 
 
             });
+
 
 
         fetchConToken(`inventarios/conteo/${idInventario}`, '', '', "GET")
@@ -71,13 +77,14 @@ const InventarioDetalle = () => {
 
 
 
+    console.log(inventarioDB)
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if(!value) return toast.error('El conteo no puede ir vacio',{ position: toast.POSITION.TOP_CENTER, autoClose: 2000  });
+        if (!value) return toast.error('El conteo no puede ir vacio', { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
 
-        if(!Number(value)) return toast.error('Solo Valores Numericos',{ position: toast.POSITION.TOP_CENTER, autoClose: 2000  });
+        if (!Number(value)) return toast.error('Solo Valores Numericos', { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
 
         setIsLoading(true)
 
@@ -87,9 +94,15 @@ const InventarioDetalle = () => {
             fetchConToken("inventarios", '', { inventario, conteo: value }, 'POST')
                 .then(resp => resp.json())
                 .then(body => {
+
+
+                    if (!body.ok) {
+                        return toast.error(body.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
+                    }
+
                     const { conteos } = body;
 
-                    console.log(conteos)
 
                     setConteos([...conteos])
 
@@ -117,6 +130,17 @@ const InventarioDetalle = () => {
 
             <Card >
                 <CardContent>
+
+                    {
+                        inventarioDB?.PAUSADO &&
+
+                        <Typography color="text.danger" component="h1" sx={{ mb: 3, color:"red" }} >
+                            Inventario Pausado
+                        </Typography>
+
+                    }
+
+
                     <Typography color="text.secondary" component="h1" sx={{ mb: 3 }} >
                         {inventario.I2DESCR}
                     </Typography>
@@ -143,7 +167,7 @@ const InventarioDetalle = () => {
                                 sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}
                             >
 
-                                <div style={{widht:200}}>
+                                <div style={{ widht: 200 }}>
 
                                     <strong> Conteo {i + 1}: {conteo.cantidad}</strong>
 
@@ -196,7 +220,7 @@ const InventarioDetalle = () => {
                                     variant='contained'
                                     size="small"
                                     type='submit'
-                                    disabled = {isLoading}
+                                    disabled={isLoading }
                                 >
                                     guardar
                                 </Button>
