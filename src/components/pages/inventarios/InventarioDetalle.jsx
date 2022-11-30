@@ -11,7 +11,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { fetchConToken, fetchSinToken } from '../../../helpers/fetch';
+import { fetchConToken } from '../../../helpers/fetch';
 import { toast } from 'react-toastify';
 
 
@@ -22,7 +22,7 @@ const InventarioDetalle = () => {
 
     const [inventario, setInventario] = useState({});
 
-    const [inventarioDB, setInventarioDB] = useState({ PAUSADO:false})
+    const [inventarioDB, setInventarioDB] = useState({ PAUSADO: false })
 
     const [conteos, setConteos] = useState([]);
 
@@ -51,14 +51,16 @@ const InventarioDetalle = () => {
 
                 setInventario(body.inventario);
 
-                if(body.inventarioDB){
+                if (body.inventarioDB) {
                     setInventarioDB(body.inventarioDB)
                 }
 
-                
+
 
 
             });
+
+            console.log(inventarioDB)
 
 
 
@@ -75,9 +77,7 @@ const InventarioDetalle = () => {
     }, [idInventario]);
 
 
-
-
-    console.log(inventarioDB)
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -86,7 +86,11 @@ const InventarioDetalle = () => {
 
         if (!Number(value)) return toast.error('Solo Valores Numericos', { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
 
+        if(inventarioDB.PAUSADO) return toast.error('El Conteo esta pausado', { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
         setIsLoading(true)
+
+        const loadToast = toast.loading('Cargando Registros',{ position: toast.POSITION.TOP_CENTER, });
 
 
         const createUpdateInventory =
@@ -97,7 +101,18 @@ const InventarioDetalle = () => {
 
 
                     if (!body.ok) {
-                        return toast.error(body.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
+
+                        return toast.update(
+                            loadToast,
+                            {
+                                render: body.msg,
+                                type: "error",
+                                isLoading: false,
+                                autoClose: 2000,
+                                position: toast.POSITION.TOP_CENTER,
+                            }
+                        )
 
                     }
 
@@ -110,15 +125,44 @@ const InventarioDetalle = () => {
 
                     setIsLoading(false)
 
+                    toast.update(
+                        loadToast,
+                        {
+                            render: "Registrado exitosamente!! 👌",
+                            type: "success",
+                            isLoading: false,
+                            autoClose: 2000,
+                            position: toast.POSITION.TOP_CENTER,
+                        }
+                    );
+
+                    fetchConToken(`inventarios/detail/${idInventario}`, '', '', "GET")
+                    .then(async (resp) => {
+        
+                        const body = await resp.json()
+        
+                        if (!body.ok) return console.log(body);
+        
+                        setInventario(body.inventario);
+        
+                        if (body.inventarioDB) {
+                            setInventarioDB(body.inventarioDB)
+                        }
+        
+        
+        
+        
+                    });
+
 
                 })
                 .catch(console.log)
 
 
-        toast.promise(createUpdateInventory,
-            { pending: 'Guardando', success: 'guardado correctamente 👌', error: 'Hubo un error 🤯' },
-            { position: toast.POSITION.TOP_CENTER, autoClose: 2000 }
-        )
+        // toast.promise(createUpdateInventory,
+        //     { pending: 'Guardando', success: 'guardado correctamente 👌', error: 'Hubo un error 🤯' },
+        //     { position: toast.POSITION.TOP_CENTER, autoClose: 2000 }
+        // )
 
 
     }
@@ -134,8 +178,8 @@ const InventarioDetalle = () => {
                     {
                         inventarioDB?.PAUSADO &&
 
-                        <Typography color="text.danger" component="h1" sx={{ mb: 3, color:"red" }} >
-                            Inventario Pausado
+                        <Typography color="text.secondary" component="h1" sx={{ mb: 3, color: "#ff0000" }} >
+                            CONTEO PAUSADO
                         </Typography>
 
                     }
@@ -167,23 +211,22 @@ const InventarioDetalle = () => {
                                 sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}
                             >
 
-                                <div style={{ widht: 200 }}>
+                              
 
                                     <strong> Conteo {i + 1}: {conteo.cantidad}</strong>
 
-                                </div>
 
-                                <div>
+                                <span>
 
                                     {conteo.name}
 
-                                </div>
+                                </span>
 
-                                <div>
+                                <span>
 
                                     <Moment format='DD/MM/YYYY HH:ss ' date={conteo.createdAt} />
 
-                                </div>
+                                </span>
 
 
                             </Typography>
@@ -210,9 +253,8 @@ const InventarioDetalle = () => {
                                 <TextField
                                     id="outlined-multiline-flexible"
                                     label="Conteo"
-                                    multiline
-                                    maxRows={4}
                                     value={value}
+                                    type="number"
                                     onChange={handleChange}
                                 />
 
@@ -220,7 +262,7 @@ const InventarioDetalle = () => {
                                     variant='contained'
                                     size="small"
                                     type='submit'
-                                    disabled={isLoading }
+                                    disabled={isLoading || inventarioDB.PAUSADO}
                                 >
                                     guardar
                                 </Button>

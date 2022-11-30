@@ -40,6 +40,7 @@ export const useAuth = () => {
 
         const resp = await fetchSinToken('auth/login', '', { email, password }, 'POST')
 
+
     
         const body = await resp.json();
 
