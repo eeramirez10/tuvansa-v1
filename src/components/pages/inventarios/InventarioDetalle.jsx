@@ -1,9 +1,9 @@
 import { Button, Container, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'react-router-dom';
 
 import Moment from 'react-moment';
-
+import { useAuth } from '../../../hooks/useAuth';
 
 
 import Box from '@mui/material/Box';
@@ -22,11 +22,15 @@ const InventarioDetalle = () => {
 
     const [inventario, setInventario] = useState({});
 
-    const [inventarioDB, setInventarioDB] = useState({ PAUSADO:false})
+    const [inventarioDB, setInventarioDB] = useState({ PAUSADO: false })
 
     const [conteos, setConteos] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const { auth} = useAuth();
+
+    
 
 
 
@@ -51,11 +55,11 @@ const InventarioDetalle = () => {
 
                 setInventario(body.inventario);
 
-                if(body.inventarioDB){
+                if (body.inventarioDB) {
                     setInventarioDB(body.inventarioDB)
                 }
 
-                
+
 
 
             });
@@ -72,12 +76,41 @@ const InventarioDetalle = () => {
 
 
 
-    }, [idInventario]);
+    }, [idInventario, conteos]);
+
+    const reset = (conteo, i) => {
+
+
+        fetchConToken(`inventarios/reset/conteo`, '', { conteo, numeroConteo:i}, "POST")
+            .then(async (resp) => {
+
+                const body = await resp.json();
+
+                if (!body.ok) return toast.error(body.msg);
+
+                toast.success(body.msg)
+
+
+                fetchConToken(`inventarios/conteo/${idInventario}`, '', '', "GET")
+                .then(resp => resp.json())
+                .then(body => {
+                    const { conteos } = body;
+    
+                    setConteos([...conteos])
+                });
 
 
 
 
-    console.log(inventarioDB)
+
+
+            });
+    }
+
+
+
+
+ 
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -134,11 +167,13 @@ const InventarioDetalle = () => {
                     {
                         inventarioDB?.PAUSADO &&
 
-                        <Typography color="text.danger" component="h1" sx={{ mb: 3, color:"red" }} >
+                        <Typography color="text.danger" component="h1" sx={{ mb: 3, color: "red" }} >
                             Inventario Pausado
                         </Typography>
 
                     }
+
+
 
 
                     <Typography color="text.secondary" component="h1" sx={{ mb: 3 }} >
@@ -155,6 +190,8 @@ const InventarioDetalle = () => {
                     <Typography sx={{ mb: 3 }}>
                         Existencia en proscai: {inventario.ALMCANT}
                     </Typography>
+
+
 
                     {
                         conteos.map((conteo, i) => {
@@ -184,6 +221,17 @@ const InventarioDetalle = () => {
                                     <Moment format='DD/MM/YYYY HH:ss ' date={conteo.createdAt} />
 
                                 </div>
+
+                                {
+                                    i === conteos.length - 1 &&
+
+                                    <Button onClick={() => reset(conteo, i)} >
+                                        Resetear
+                                    </Button>
+
+
+                                }
+
 
 
                             </Typography>
@@ -220,7 +268,7 @@ const InventarioDetalle = () => {
                                     variant='contained'
                                     size="small"
                                     type='submit'
-                                    disabled={isLoading }
+                                    disabled={isLoading}
                                 >
                                     guardar
                                 </Button>
