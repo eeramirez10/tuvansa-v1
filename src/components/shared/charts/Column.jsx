@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import Drilldown from 'highcharts/modules/drilldown';
+import { getVendedoresVentas } from '../../../services/charts';
+import { useCharts } from '../../../hooks/useCharts';
+import { CircularProgress, Paper } from '@mui/material';
 
 Drilldown(Highcharts);
 
+let sucursal = '';
+
 let initialOptions = {
     chart: {
-        type: 'column'
+        type: 'column',
+        // events: {
+        //     click: function (event) {
+        //         alert("clicked column");
+        //     }
+        // }
     },
     title: {
         text: 'Browser market shares. January, 2018'
@@ -34,18 +44,26 @@ let initialOptions = {
         enabled: false
     },
     plotOptions: {
+
         series: {
+
             borderWidth: 0,
             dataLabels: {
                 enabled: true,
                 format: '${point.y:,.0f}'
             },
             point: {
-                events: {
-                    click: function () {
-                        console.log(this)
-                    }
-                }
+                // events: {
+                //     click: function () {
+                //         console.log(this)
+                //     }
+                // }
+            },
+            events: {
+                // click: function ({point}){
+                //     console.log(point.name)
+                //     sucursal = point.name;
+                // }
             }
 
         }
@@ -58,340 +76,108 @@ let initialOptions = {
 
     series: [
         {
+            color: "#434348",
             name: "Ventas",
             colorByPoint: true,
             data: [
-                {
-                    name: "Mexico",
-                    y: 62.74,
-                    drilldown: "Mexico"
-                },
-                {
-                    name: "Firefox",
-                    y: 10.57,
-                    drilldown: "Firefox"
-                },
-                {
-                    name: "Internet Explorer",
-                    y: 7.23,
-                    drilldown: "Internet Explorer"
-                },
-                {
-                    name: "Safari",
-                    y: 5.58,
-                    drilldown: "Safari"
-                },
-                {
-                    name: "Edge",
-                    y: 4.02,
-                    drilldown: "Edge"
-                },
-                {
-                    name: "Opera",
-                    y: 1.92,
-                    drilldown: "Opera"
-                },
-                {
-                    name: "Other",
-                    y: 7.62,
-                    drilldown: null
-                }
+                // {
+                //     name: "Mexico",
+                //     y: 62.74,
+                //     drilldown: "Mexico"
+                // },
+
             ]
         }
     ],
-    drilldown: {
-        breadcrumbs: {
-            position: {
-                align: 'right'
-            }
-        },
-        series: [
-            {
-                name: "Mexico",
-                id: "Mexico",
-                data: [
-                    {
-                        "name": "ISABEL-M",
-                        "y": 14098573
-                    },
-                    {
-                        "name": "JC AGUIRRE",
-                        "y": 3811599
-                    },
-                    {
-                        "name": "ALICIA",
-                        "y": 2350752
-                    },
-                    {
-                        "name": "DANIEL",
-                        "y": 2221454
-                    },
-                    {
-                        "name": "D - J",
-                        "y": 2150839
-                    },
-                    {
-                        "name": "LUCIANA",
-                        "y": 1882003
-                    },
-                    {
-                        "name": "ARTURO NA",
-                        "y": 1347930
-                    },
-                    {
-                        "name": "PAOLA",
-                        "y": 1299353
-                    },
-                    {
-                        "name": "ISABEL",
-                        "y": 825049
-                    },
-                    {
-                        "name": "MARCELA - LORENA",
-                        "y": 531737
-                    },
-
-                    {
-                        "name": "VENTAS GENERALES",
-                        "y": 328362
-                    },
-                    {
-                        "name": "MINERIA",
-                        "y": 271851
-                    },
-                    {
-                        "name": "JOSEFINA",
-                        "y": 218779
-                    },
-                    {
-                        "name": "ALICIA",
-                        "y": 213847
-                    },
-                    {
-                        "name": "MARIO",
-                        "y": 130668
-                    },
-                    {
-                        "name": "LUIS ALFARO",
-                        "y": 107032
-                    },
-                    {
-                        "name": "BEATRIZ",
-                        "y": 91818
-                    },
-                    {
-                        "name": "JORGE",
-                        "y": 65847
-                    },
-                    {
-                        "name": "D - A",
-                        "y": 44248
-                    },
-                    {
-                        "name": "MARTHA",
-                        "y": 32699
-                    },
-                    {
-                        "name": "MIGUEL",
-                        "y": 12526
-                    }
-
-                ]
-            },
-            {
-                name: "Firefox",
-                id: "Firefox",
-                data: [
-                    [
-                        "v58.0",
-                        1.02
-                    ],
-                    [
-                        "v57.0",
-                        7.36
-                    ],
-                    [
-                        "v56.0",
-                        0.35
-                    ],
-                    [
-                        "v55.0",
-                        0.11
-                    ],
-                    [
-                        "v54.0",
-                        0.1
-                    ],
-                    [
-                        "v52.0",
-                        0.95
-                    ],
-                    [
-                        "v51.0",
-                        0.15
-                    ],
-                    [
-                        "v50.0",
-                        0.1
-                    ],
-                    [
-                        "v48.0",
-                        0.31
-                    ],
-                    [
-                        "v47.0",
-                        0.12
-                    ]
-                ]
-            },
-            {
-                name: "Internet Explorer",
-                id: "Internet Explorer",
-                data: [
-                    [
-                        "v11.0",
-                        6.2
-                    ],
-                    [
-                        "v10.0",
-                        0.29
-                    ],
-                    [
-                        "v9.0",
-                        0.27
-                    ],
-                    [
-                        "v8.0",
-                        0.47
-                    ]
-                ]
-            },
-            {
-                name: "Safari",
-                id: "Safari",
-                data: [
-                    [
-                        "v11.0",
-                        3.39
-                    ],
-                    [
-                        "v10.1",
-                        0.96
-                    ],
-                    [
-                        "v10.0",
-                        0.36
-                    ],
-                    [
-                        "v9.1",
-                        0.54
-                    ],
-                    [
-                        "v9.0",
-                        0.13
-                    ],
-                    [
-                        "v5.1",
-                        0.2
-                    ]
-                ]
-            },
-            {
-                name: "Edge",
-                id: "Edge",
-                data: [
-                    [
-                        "v16",
-                        2.6
-                    ],
-                    [
-                        "v15",
-                        0.92
-                    ],
-                    [
-                        "v14",
-                        0.4
-                    ],
-                    [
-                        "v13",
-                        0.1
-                    ]
-                ]
-            },
-            {
-                name: "Opera",
-                id: "Opera",
-                data: [
-                    [
-                        "v50.0",
-                        0.96
-                    ],
-                    [
-                        "v49.0",
-                        0.82
-                    ],
-                    [
-                        "v12.1",
-                        0.14
-                    ]
-                ]
-            }
-        ]
-    }
+    // drilldown: {
+    //     breadcrumbs: {
+    //         position: {
+    //             align: 'right'
+    //         }
+    //     },
+    //     series: [
+    //         {
+    //             name: "Mexico",
+    //             id: "Mexico",
+    //             data: [{name:"test", y:2345} ]
+    //         },
+    //     ]
+    // }
 }
 
-const Column = ({ data }) => {
+const Column = () => {
 
     const [options, setOptions] = useState(initialOptions);
 
+    const { data: sucursal, isLoading, setIsLoading } = useCharts()
 
-    const updateSeries = () => {
-        setOptions({
-            ...options,
-            series: [
-                {
-                    name: "Ventas",
-                    colorByPoint: true,
-                    data: data.series
-                }
-            ],
-            drilldown: {
-                series: data.seriesDrillDown
+
+
+    const ref = useRef(null);
+
+    useEffect(() => {
+
+
+        if (sucursal) {
+
+            setIsLoading(true)
+
+            const sucursales = {
+                Mexico: 1,
+                Monterrey: 2,
+                Veracruz: 3,
+                Mexicali: 4,
+                Queretaro: 5,
+                Cancun: 6,
+
             }
-        })
-    }
 
 
-    useEffect(()=>{
+            const nombreSucursal = sucursal.name;
 
-        if(data){
 
-            setOptions({
-                ...options,
-                series:[
-                    {
-                        name: "Ventas",
-                        colorByPoint: true,
-                        data: data?.series
-                    }
-                ],
-                drilldown:{
-                    breadcrumbs: {
-                        position: {
-                            align: 'right'
-                        }
-                    },
-                    series: data?.seriesDrillDown
-                }
-            })
+            if (!nombreSucursal) return;
+
+
+
+            getVendedoresVentas(sucursales[nombreSucursal], sucursal.month, sucursal.year)
+                .then(({ data }) => {
+
+                    setIsLoading(false)
+
+                    setOptions({
+                        ...options,
+                        title:{
+                            text: `${sucursal.name} ${sucursal.month}, ${sucursal.year}`
+
+                        },
+
+
+                        series: [
+                            {
+                                color: sucursal.color,
+                                name: "Ventas",
+                                colorByPoint: false,
+                                data: data.data
+                            }
+                        ],
+
+                    })
+
+
+                })
+
+
 
         }
+       
 
 
-    }, [data])
 
 
-    
+
+
+    }, [sucursal])
 
 
 
@@ -401,13 +187,47 @@ const Column = ({ data }) => {
 
 
             {
-                data &&
 
-                <HighchartsReact highcharts={Highcharts} options={options} />
+
+                sucursal?.name ?
+
+
+
+                    isLoading ?
+
+
+                        < CircularProgress size={150} sx={{ left: "45%", top: "50%", position: "absolute" }} />
+
+
+
+
+                        :
+
+
+                        <HighchartsReact
+                            highcharts={Highcharts}
+
+
+                            options={{
+                                ...options, plotOptions: {
+                                    series: {
+                                        events: {
+                                            click: function ({ point }) {
+
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }} ref={ref} />
+
+                    : ""
 
 
 
             }
+
+
 
 
 

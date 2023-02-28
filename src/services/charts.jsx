@@ -12,11 +12,28 @@ export const getSucursalesVentas = async () => {
 
 }
 
-export const getVendedoresVentas = async () => {
+export const getVendedoresVentas = async (sucursal = 1, month, year) => {
+
+
 
     const endpoint = 'charts/vendedores';
 
-    const resp = await fetchSinToken(endpoint);
+    const resp = await fetchSinToken(endpoint, { sucursal, month, year });
+
+    const body = await resp.json();
+
+    return body;
+
+}
+
+
+export const getFamilias = async (sucursal = "Mexico", month, year = new Date().getFullYear()) => {
+
+
+    
+    const endpoint = 'charts/familias';
+
+    const resp = await fetchSinToken(endpoint, {sucursal, month, year});
 
     const body = await resp.json();
 

@@ -1,5 +1,5 @@
-import React, { createContext, useMemo, useState } from 'react'
-import { getEmbarques } from '../services/compras';
+import React, { createContext } from 'react'
+
 
 
 const TableContext = createContext();

@@ -53,7 +53,7 @@ export const fetchConToken = (endpoint, params, data, method = 'GET', signal) =>
 
     // console.log(params)
 
-    const url = `${URI}${endpoint}${params}`;
+    const url = `${URI_PROD}${endpoint}${params}`;
 
     
 

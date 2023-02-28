@@ -53,7 +53,7 @@ const Login = () => {
 
     useEffect(() =>{
 
-        console.log(params)
+      
 
     })
 
@@ -82,6 +82,7 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        let idToastLoading = toast.loading("Iniciando sesion ....", { position: toast.POSITION.BOTTOM_CENTER});
 
         const form = {
             email: data.get('email'),
@@ -97,7 +98,11 @@ const Login = () => {
 
         }
 
-        handleLogin(form.email, form.password)
+       
+
+       await  handleLogin(form.email, form.password, idToastLoading)
+
+    
 
 
     };

@@ -17,16 +17,16 @@ export const useAuth = () => {
 
     const { auth, setAuth } = useContext(AuthContext);
 
-    useEffect(()=>{
+    useEffect(() => {
 
-      
-     
-        if(!location.key){
+
+
+        if (!location.key) {
 
             localStorage.setItem('urlRedirect', location.pathname)
 
         }
-    },[location])
+    }, [location])
 
     const handleAuth = (user) => {
 
@@ -36,37 +36,51 @@ export const useAuth = () => {
     }
 
 
-    const handleLogin = async (email, password) => {
+    const handleLogin = async (email, password, idToastLoading) => {
 
         const resp = await fetchSinToken('auth/login', '', { email, password }, 'POST')
 
-    
+
         const body = await resp.json();
 
 
         if (!body.ok) {
 
-            return toast.error(body.msg, {
-                position: toast.POSITION.BOTTOM_CENTER,
-                autoClose: 2000
-            });
+            return toast.update(idToastLoading,
+                {
+                    render: body.msg,
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 2000,
+                    position: toast.POSITION.BOTTOM_CENTER
+                })
+
+            // return toast.error(body.msg, {
+            //     position: toast.POSITION.BOTTOM_CENTER,
+            //     autoClose: 2000
+            // });
 
         }
 
+        toast
+            .update(idToastLoading, {
+                render: "Inicio de sesion correcto",
+                type: "success",
+                isLoading: false,
+                autoClose: 2000,
+                position: toast.POSITION.BOTTOM_CENTER
+            })
 
-        toast.success('Login Correcto', {
-            position: toast.POSITION.BOTTOM_CENTER,
-            autoClose: 1000
-        })
+
 
         handleAuth({ ...body.user, token: body.token })
 
-        if(localStorage.getItem('urlRedirect')){
+        if (localStorage.getItem('urlRedirect')) {
             hystory.push(localStorage.getItem('urlRedirect'));
             localStorage.removeItem('urlRedirect')
         }
 
-        
+
 
     }
 
@@ -78,22 +92,22 @@ export const useAuth = () => {
         setAuth('')
     }
 
-    const checkAuthToken = async () =>{
+    const checkAuthToken = async () => {
 
         const token = localStorage.getItem('token');
 
-        if(!token ) return setAuth('')
+        if (!token) return setAuth('')
 
         try {
             const resp = await fetchConToken('auth/renew')
 
             const body = await resp.json();
 
-            if(!body.ok && body.msg === "Token no válido") return handleLogout();
-              
+            if (!body.ok && body.msg === "Token no válido") return handleLogout();
+
 
             localStorage.setItem('token', body.token);
-            
+
 
 
         } catch (error) {
@@ -103,7 +117,7 @@ export const useAuth = () => {
             localStorage.clear('token');
             handleLogout()
 
-            
+
         }
 
     }

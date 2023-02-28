@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { Button, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
-import { getSucursalesVentas, getVendedoresVentas } from '../../../services/charts';
+
 import BasicLine from '../../shared/charts/BasicLine';
 import Column from '../../shared/charts/Column';
 
@@ -11,47 +11,13 @@ import { useAuth } from '../../../hooks/useAuth';
 import { MediaControlCard } from '../../cards/Card';
 import { Pie } from '../../shared/charts/Pie';
 
-
-
-
-
 const Charts = () => {
 
     const { auth } = useAuth();
 
-
-    const [sucursalesData, setSucursalesData] = useState(null)
-
-    const [vendedoresData, setVendedoresData] = useState(null);
-
-
-    useEffect(() => {
-
-        if (auth.rol !== 'admin') return
-
-        getSucursalesVentas()
-            .then(({ data }) => {
-
-                console.log(data)
-
-                setSucursalesData(data)
-
-            })
-
-        getVendedoresVentas()
-            .then(({ data }) => {
-                setVendedoresData(data)
-            })
-
-
-
-
-    }, [])
-
-
-
-
     if (auth.rol !== 'admin') {
+
+
 
         return (
             <>
@@ -70,7 +36,7 @@ const Charts = () => {
 
         <>
 
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, minHeight:1000 }} >
                 <Box sx={{ flexGrow: 1 }}>
 
                     <Grid container spacing={2} sx={{ marginBottom: 5 }}>
@@ -92,15 +58,15 @@ const Charts = () => {
 
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={4}>
 
-                            {/* <BasicLine data={sucursalesData} /> */}
+                            <BasicLine  />
 
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            {/* <Column data={vendedoresData} /> */}
+                        <Grid item xs={12} md={4}>
+                            <Column />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={4}>
                             <Pie />
                         </Grid>
 
