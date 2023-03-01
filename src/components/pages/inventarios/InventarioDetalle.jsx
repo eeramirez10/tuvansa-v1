@@ -78,7 +78,7 @@ const InventarioDetalle = () => {
 
 
 
-    }, [idInventario, conteos]);
+    }, [idInventario]);
 
     const reset = (conteo, i) => {
 

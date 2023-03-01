@@ -42,18 +42,6 @@ const Login = () => {
 
      const { handleLogin } =  useAuth();
 
-    
-
-     const params = useParams ();
-
-    const location = useLocation();
-
-
-    useEffect(() =>{
-
-      
-
-    })
 
   
 
