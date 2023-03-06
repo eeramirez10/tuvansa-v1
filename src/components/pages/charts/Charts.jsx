@@ -1,19 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react'
-
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
-
 import BasicLine from '../../shared/charts/BasicLine';
 import Column from '../../shared/charts/Column';
-
 import { useAuth } from '../../../hooks/useAuth';
-
-import { MediaControlCard } from '../../cards/Card';
 import { Pie } from '../../shared/charts/Pie';
+import Acumulado from '../../shared/charts/Acumulado';
+import useWindowSize from '../../../hooks/useWindowSize';
+
+
 
 const Charts = () => {
 
     const { auth } = useAuth();
+
+    const ref = useRef(null);
+
+    const size = useWindowSize();
+
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
+
+
+    useEffect(() => {
+        setWidth(ref.current.offsetWidth - 17 );
+        setHeight(ref.current.offsetHeight);
+
+      
+    }, [size]);
+
+    console.log(width, height)
+
 
     if (auth.rol !== 'admin') {
 
@@ -32,42 +49,33 @@ const Charts = () => {
         )
     }
 
+
+
     return (
 
         <>
 
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, minHeight:1000 }} >
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, minHeight: 1000 }} >
                 <Box sx={{ flexGrow: 1 }}>
 
-                    <Grid container spacing={2} sx={{ marginBottom: 5 }}>
-                        <Grid item xs={12} md={6} lg={3} >
+                    <Grid container spacing={2} sx={{ marginBottom: 5 }} >
 
-                            <MediaControlCard title={'Venta Neta'} subtitle={'$2,000,000.00'} icon="venta" />
-
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <MediaControlCard title={'Costo'} subtitle={'$5,000,000.00'} icon="costo" />
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={3}>
-                            <MediaControlCard title={'Utilidad'} subtitle={'$2,000,000.00'} icon="utilidad" />
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={3}>
-                            <MediaControlCard title={'Porcentaje'} subtitle={'$2,000,000.00'} icon="porcentaje" />
-                        </Grid>
+                        <Acumulado />
 
                     </Grid>
+
+
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={4} ref={ref}  >
 
-                            <BasicLine  />
+                            <BasicLine />
 
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Column />
+                            <Column height={height} width={width}  />
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Pie />
+                            <Pie height={height} width={width} />
                         </Grid>
 
                     </Grid>

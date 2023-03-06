@@ -40,3 +40,20 @@ export const getFamilias = async (sucursal = "Mexico", month, year = new Date().
     return body;
 
 }
+
+export const getAcumulado = async ({sucursal = "all", year = ""}) => {
+
+   
+
+    const endpoint = 'charts/acumulado';
+
+    const resp = await fetchSinToken(endpoint, {sucursal,year});
+
+    const body = await resp.json();
+
+
+
+    return body;
+
+
+}

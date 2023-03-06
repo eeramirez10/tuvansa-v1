@@ -5,24 +5,28 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PercentIcon from '@mui/icons-material/Percent';
 import MoneyIcon from '@mui/icons-material/Money';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 
-import { red, green, blue, orange, } from '@mui/material/colors';
+import { FormatNumber } from '../../helpers/FormatNumber'
+import { Skeleton } from '@mui/material';
 
-export function MediaControlCard({ title, subtitle, icon }) {
-    const theme = useTheme();
+
+
+
+
+export function MediaControlCard({ title, subtitle, icon, isLoading }) {
 
     const style = {
-        card:{
+        card: {
             display: 'flex',
             borderRadius: '0.75rem',
             transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-            boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
+            boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem',
+
         },
-        cardMedia:{
+        cardMedia: {
             width: 180,
             display: 'flex',
             alignItems: 'center',
@@ -34,7 +38,7 @@ export function MediaControlCard({ title, subtitle, icon }) {
                             : icon === 'porcentaje' ? 'linear-gradient(195deg, rgb(236, 64, 122), rgb(216, 27, 96))'
                                 : '',
         },
-        cardContent:{
+        cardContent: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-end',
@@ -64,11 +68,19 @@ export function MediaControlCard({ title, subtitle, icon }) {
             </CardMedia>
 
             <CardContent sx={style.cardContent}>
-                <Typography component="div" color="text.secondary" variant="h5">
+                <Typography component="div" color="text" variant="h5">
                     {title}
                 </Typography>
-                <Typography variant="subtitle1" component="div">
-                    {subtitle}
+                <Typography variant="subtitle2" component="div">
+
+                    
+
+                    {
+                        isLoading ? <Skeleton width={60} animation="wave" />
+                        : FormatNumber({ number: subtitle, isPorcentaje: icon === "porcentaje" })
+                    }
+
+                    
                 </Typography>
             </CardContent>
 

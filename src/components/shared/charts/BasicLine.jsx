@@ -7,7 +7,7 @@ import { getSucursalesVentas } from '../../../services/charts';
 
 const lineOptions = {
     title: {
-        text: 'Ventas Sucursales - 2022'
+        text: 'Ventas Sucursales '
     },
 
     subtitle: {
@@ -51,14 +51,14 @@ const lineOptions = {
 };
 
 
-const BasicLine = () => {
+const BasicLine = (prop) => {
 
     const [options, setOptions] = useState(lineOptions);
     const [year, setYear] = useState("")
     const { setSucursalData } = useCharts()
 
 
-    const chartComponent = useRef(null);
+
 
     useEffect(() => {
 
@@ -66,13 +66,21 @@ const BasicLine = () => {
         getSucursalesVentas()
         .then(({ data }) => {
 
+       
+
         
             setYear(data[0].data[0].year)
 
-            setOptions({
-                ...options,
+
+
+            setOptions( o => ({
+                ...o,
+                title:{
+                    text: `Ventas Sucursales - ${data[0].data[0].year}`
+                },
                 series: data
-            })
+
+            }))
 
           
 
@@ -102,7 +110,7 @@ const BasicLine = () => {
 
 
     return (
-        <HighchartsReact ref={chartComponent} highcharts={Highcharts} options={{...options,     plotOptions: {
+        <HighchartsReact highcharts={Highcharts} options={{...options,     plotOptions: {
             line: {
                 dataLabels: {
                     enabled: false

@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Drilldown from 'highcharts/modules/drilldown';
 import { getFamilias } from '../../../services/charts';
 import { useCharts } from '../../../hooks/useCharts';
+import { Skeleton } from '@mui/material';
 
 Drilldown(Highcharts);
 
@@ -307,7 +308,7 @@ const initialOptions = {
     // }
 }
 
-export const Pie = () => {
+export const Pie = ({height, width }) => {
 
     const [options, setOptions] = useState(initialOptions);
 
@@ -327,7 +328,7 @@ export const Pie = () => {
                    
                     setIsLoading(false)
 
-                    setOptions({
+                    setOptions(options => ({
                         ...options,
                         title: {
                             text: `${sucursal.name} ${sucursal.month}, ${sucursal.year}`
@@ -339,7 +340,7 @@ export const Pie = () => {
                             data
 
                         }]
-                    })
+                    }))
 
                 })
                 .catch( e =>{
@@ -359,11 +360,15 @@ export const Pie = () => {
         <>
 
             {
-                sucursal.name &&
+                sucursal.name  ?
 
-                !isLoading &&
+                isLoading ? 
+                
+                <Skeleton variant="rectangular" animation="wave" width={width } height={height}  /> :
 
-                < HighchartsReact highcharts={Highcharts} options={options} />
+                <HighchartsReact highcharts={Highcharts} options={options} />
+
+                : ''
 
             }
 

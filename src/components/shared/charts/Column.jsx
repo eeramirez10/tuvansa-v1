@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Drilldown from 'highcharts/modules/drilldown';
 import { getVendedoresVentas } from '../../../services/charts';
 import { useCharts } from '../../../hooks/useCharts';
-import { CircularProgress, Paper } from '@mui/material';
+import { CircularProgress, Paper, Skeleton } from '@mui/material';
 
 Drilldown(Highcharts);
 
@@ -105,7 +105,7 @@ let initialOptions = {
     // }
 }
 
-const Column = () => {
+const Column = ({height, width }) => {
 
     const [options, setOptions] = useState(initialOptions);
 
@@ -117,6 +117,9 @@ const Column = () => {
 
     useEffect(() => {
 
+        console.log(ref.current)
+
+        
 
         if (sucursal) {
 
@@ -196,7 +199,9 @@ const Column = () => {
                     isLoading ?
 
 
-                        < CircularProgress size={150} sx={{ left: "45%", top: "50%", position: "absolute" }} />
+                        // < CircularProgress size={150} sx={{ left: "45%", top: "50%", position: "absolute" }} />
+
+                        <Skeleton variant="rectangular" width={width} height={height}  />
 
 
 
@@ -207,7 +212,7 @@ const Column = () => {
                         <HighchartsReact
                             highcharts={Highcharts}
 
-
+                            
                             options={{
                                 ...options, plotOptions: {
                                     series: {
