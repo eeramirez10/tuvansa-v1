@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext";
 import { toast } from 'react-toastify';
 import { fetchConToken, fetchSinToken } from '../helpers/fetch';
@@ -11,11 +11,15 @@ export const useAuth = () => {
 
     const location = useLocation();
 
-    const hystory = useHistory();;
+    const hystory = useHistory();
+
+    const [isAllow, setIsAllow] = useState(false);
 
 
 
     const { auth, setAuth } = useContext(AuthContext);
+
+
 
     useEffect(() => {
 
@@ -26,7 +30,22 @@ export const useAuth = () => {
             localStorage.setItem('urlRedirect', location.pathname)
 
         }
+
+
+
+
     }, [location])
+
+    useEffect(() => {
+
+        if(auth?.rol){
+            setIsAllow(auth.rol === 'admin' || auth.vistas.includes(hystory.location.pathname.slice(1)))
+
+        }
+
+        
+
+    }, [])
 
     const handleAuth = (user) => {
 
@@ -41,8 +60,10 @@ export const useAuth = () => {
         const resp = await fetchSinToken('auth/login', '', { email, password }, 'POST')
 
 
-    
+
         const body = await resp.json();
+
+
 
 
         if (!body.ok) {
@@ -56,10 +77,6 @@ export const useAuth = () => {
                     position: toast.POSITION.BOTTOM_CENTER
                 })
 
-            // return toast.error(body.msg, {
-            //     position: toast.POSITION.BOTTOM_CENTER,
-            //     autoClose: 2000
-            // });
 
         }
 
@@ -130,7 +147,8 @@ export const useAuth = () => {
         handleAuth,
         handleLogout,
         handleLogin,
-        checkAuthToken
+        checkAuthToken,
+        isAllow
     }
 
 

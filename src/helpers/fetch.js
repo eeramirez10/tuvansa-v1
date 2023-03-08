@@ -99,7 +99,7 @@ export const fetchFile = (endpoint, files, name, method = 'POST',) => {
 
     // console.log(endpoint)
 
-    const url = `${URI_PROD}${endpoint}`;
+    const url = `${URI}${endpoint}`;
 
     const formData = new FormData();
 

@@ -7,12 +7,16 @@ import { useAuth } from '../../../hooks/useAuth';
 import { Pie } from '../../shared/charts/Pie';
 import Acumulado from '../../shared/charts/Acumulado';
 import useWindowSize from '../../../hooks/useWindowSize';
+import { useLocation} from 'react-router-dom';
+import SinPermisos from '../../shared/SinPermisos';
 
 
 
 const Charts = () => {
 
-    const { auth } = useAuth();
+    const { isAllow } = useAuth();
+
+
 
     const ref = useRef(null);
 
@@ -22,31 +26,28 @@ const Charts = () => {
     const [height, setHeight] = useState(0);
 
 
+
     useEffect(() => {
-        setWidth(ref.current.offsetWidth - 17 );
-        setHeight(ref.current.offsetHeight);
 
-      
+        if (ref.current) {
+
+            setWidth(ref.current.offsetWidth - 17);
+            setHeight(ref.current.offsetHeight);
+
+        }
+
+
+
+
     }, [size]);
+    
 
-    console.log(width, height)
-
-
-    if (auth.rol !== 'admin') {
-
+   
+    if (!isAllow) {
 
 
-        return (
-            <>
 
-                <Container maxWidth="xl" sx={{ mt: 4, mb: 4, width: '100%' }} >
-                    <Box sx={{ flexGrow: 1 }}>
-                        No tienes permisos para ver esta pagina
-                    </Box>
-                </Container>
-
-            </>
-        )
+        return <SinPermisos />
     }
 
 
@@ -72,7 +73,7 @@ const Charts = () => {
 
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Column height={height} width={width}  />
+                            <Column height={height} width={width} />
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Pie height={height} width={width} />

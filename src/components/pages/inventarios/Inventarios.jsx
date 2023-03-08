@@ -1,10 +1,16 @@
 
 import { Container, Paper } from '@mui/material'
 import React from 'react'
+import { useAuth } from '../../../hooks/useAuth';
+import SinPermisos from '../../shared/SinPermisos';
 import { DimamicTable } from '../../table/DimamicTable'
 
 
 const Inventarios = () => {
+
+  const { isAllow } = useAuth();
+
+  if (!isAllow) return <SinPermisos />
 
 
 

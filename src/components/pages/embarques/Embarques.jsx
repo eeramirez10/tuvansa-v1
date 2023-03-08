@@ -2,6 +2,8 @@ import {  Container } from '@mui/material'
 import React from 'react'
 import { TableCollapsible } from '../../table/TableCollapsible'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SinPermisos from '../../shared/SinPermisos';
+import { useAuth } from '../../../hooks/useAuth';
 
 
 
@@ -33,7 +35,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 //   },
 // });
 
+
+
 export const Embarques = () => {
+
+    const { isAllow } = useAuth();
+
+    if (!isAllow) return <SinPermisos />
+
+
+
+
+
     return (
 
 
