@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+import React, { useEffect, useState } from 'react'
+import Moment from 'react-moment';
+import { useCharts } from '../../hooks/useCharts';
+import { getSucursalesVentas } from '../../services/charts';
+import { Pie } from '../shared/charts/Pie'
 
-import Drilldown from 'highcharts/modules/drilldown';
-import { getFamilias } from '../../../services/charts';
-import { useCharts } from '../../../hooks/useCharts';
-import { Skeleton } from '@mui/material';
-
-Drilldown(Highcharts);
 
 const initialOptions = {
     chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
         type: 'pie'
     },
     title: {
-        text: 'Browser market shares. January, 2018'
+        text: ''
     },
     subtitle: {
         text: ''
@@ -30,10 +29,12 @@ const initialOptions = {
     },
 
     plotOptions: {
-        series: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
             dataLabels: {
                 enabled: true,
-                format: '{point.name}: ${point.percentage:.1f}%'
+                format: '{point.name}: {point.percentage:.1f}%'
             }
         }
     },
@@ -47,43 +48,7 @@ const initialOptions = {
         {
             name: "Browsers",
             colorByPoint: true,
-            data: [
-                {
-                    name: "Chrome",
-                    y: 62.74,
-                    drilldown: "Chrome"
-                },
-                {
-                    name: "Firefox",
-                    y: 10.57,
-                    drilldown: "Firefox"
-                },
-                {
-                    name: "Internet Explorer",
-                    y: 7.23,
-                    drilldown: "Internet Explorer"
-                },
-                {
-                    name: "Safari",
-                    y: 5.58,
-                    drilldown: "Safari"
-                },
-                {
-                    name: "Edge",
-                    y: 4.02,
-                    drilldown: "Edge"
-                },
-                {
-                    name: "Opera",
-                    y: 1.92,
-                    drilldown: "Opera"
-                },
-                {
-                    name: "Other",
-                    y: 7.62,
-                    drilldown: null
-                }
-            ]
+            data: []
         }
     ],
     // drilldown: {
@@ -308,15 +273,70 @@ const initialOptions = {
     // }
 }
 
-export const Pie = ({ options }) => {
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+
+
+const d = new Date();
+let month = d.getMonth()
+
+
+const VentasSucursalesPorc = () => {
+
+    const [options, setOptions] = useState(initialOptions);
+
+    const { data:sucursal } = useCharts()
+
+   
+
+    
+    useEffect(() => {
+
+   
+
+        getSucursalesVentas()
+            .then(({ data }) => {
+
+
+                console.log(sucursal.month)
+
+                let monthData = data.map( suc =>(
+                    [suc.name,
+                    suc.data.filter( data => data.name === (sucursal.month ? sucursal.month : months[month])).map ( data => data.y)[0]]
+                
+                ) );
+
+                console.log(monthData)
+
+                setOptions(o => ({
+                    ...o,
+                    title: {
+                        text: `${sucursal.month ? sucursal.month : months[month]} - ${data[0].data[0].year}`
+                    },
+                    series: {
+                        name:"Total",
+                        data:  monthData,
+                    }
+                       
+
+                    
+
+                }))
+
+
+
+            })
+
+    }, [sucursal.month])
+
+
+
 
 
 
     return (
-
-
-        <HighchartsReact highcharts={Highcharts} options={options} />
-
-
+        <Pie options={options} />
     )
 }
+
+export default VentasSucursalesPorc

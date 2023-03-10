@@ -7,8 +7,11 @@ import { useAuth } from '../../../hooks/useAuth';
 import { Pie } from '../../shared/charts/Pie';
 import Acumulado from '../../shared/charts/Acumulado';
 import useWindowSize from '../../../hooks/useWindowSize';
-import { useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import SinPermisos from '../../shared/SinPermisos';
+import VentaSucursales from '../../graficas/VentaSucursales';
+import VentasFamilia from '../../graficas/VentasFamilia';
+import VentasSucursalesPorc from '../../graficas/VentasSucursalesPorc';
 
 
 
@@ -40,9 +43,9 @@ const Charts = () => {
 
 
     }, [size]);
-    
 
-   
+
+
     if (!isAllow) {
 
 
@@ -67,16 +70,23 @@ const Charts = () => {
 
 
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={4} ref={ref}  >
+                        <Grid item xs={12} md={8}   >
 
-                            <BasicLine />
+                            <VentaSucursales />
 
                         </Grid>
-                        <Grid item xs={12} md={4}>
+
+                        <Grid item xs={12} md={4}  >
+
+                            <VentasSucursalesPorc />
+
+                        </Grid>
+                        <Grid item xs={12} md={6} ref={ref}>
                             <Column height={height} width={width} />
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Pie height={height} width={width} />
+                        <Grid item xs={12} md={6}>
+
+                            <VentasFamilia height={height} width={width} />
                         </Grid>
 
                     </Grid>

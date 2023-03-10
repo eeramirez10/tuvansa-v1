@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-
-import Drilldown from 'highcharts/modules/drilldown';
-import { getFamilias } from '../../../services/charts';
-import { useCharts } from '../../../hooks/useCharts';
 import { Skeleton } from '@mui/material';
-
-Drilldown(Highcharts);
+import React, { useEffect, useState } from 'react'
+import { useCharts } from '../../hooks/useCharts';
+import { getFamilias } from '../../services/charts';
+import { Pie } from '../shared/charts/Pie';
 
 const initialOptions = {
     chart: {
@@ -308,15 +303,79 @@ const initialOptions = {
     // }
 }
 
-export const Pie = ({ options }) => {
+const VentasFamilia = ({height, width}) => {
 
+    const [options, setOptions] = useState(initialOptions);
+
+    const { data: sucursal, isLoading, setIsLoading } = useCharts()
+
+
+    useEffect(() => {
+
+
+
+        if (sucursal) {
+
+            setIsLoading(true);
+
+            getFamilias(sucursal.name, sucursal.month, sucursal.year)
+                .then(({ data }) => {
+
+                    setIsLoading(false)
+
+                    setOptions(options => ({
+                        ...options,
+                        title: {
+                            text: `${sucursal.name} ${sucursal.month}, ${sucursal.year}`
+
+                        },
+                        series: [{
+                            name: "Familias",
+                            colorByPoint: true,
+                            data
+
+                        }]
+                    }))
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                    setIsLoading(false)
+                })
+
+        }
+
+
+
+    }, [sucursal])
 
 
     return (
 
 
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        <>
+
+            {
+
+
+                sucursal.name ?
+
+                    isLoading ?
+
+                        <Skeleton variant="rectangular" animation="wave" height={height} width={width} /> :
+
+                        <Pie options={options} />
+
+                    : ''
+
+            }
+
+        </>
+
 
 
     )
 }
+
+export default VentasFamilia

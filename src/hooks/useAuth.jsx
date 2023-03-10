@@ -38,12 +38,12 @@ export const useAuth = () => {
 
     useEffect(() => {
 
-        if(auth?.rol){
+        if (auth?.rol) {
             setIsAllow(auth.rol === 'admin' || auth.vistas.includes(hystory.location.pathname.slice(1)))
 
         }
 
-        
+
 
     }, [])
 
@@ -57,46 +57,71 @@ export const useAuth = () => {
 
     const handleLogin = async (email, password, idToastLoading) => {
 
-        const resp = await fetchSinToken('auth/login', '', { email, password }, 'POST')
+
+
+        try {
+
+            const resp = await fetchSinToken('auth/login', '', { email, password }, 'POST')
 
 
 
-        const body = await resp.json();
+            const body = await resp.json();
 
 
 
 
-        if (!body.ok) {
+            if (!body.ok) {
 
-            return toast.update(idToastLoading,
-                {
-                    render: body.msg,
-                    type: "error",
+                return toast.update(idToastLoading,
+                    {
+                        render: body.msg,
+                        type: "error",
+                        isLoading: false,
+                        autoClose: 2000,
+                        position: toast.POSITION.BOTTOM_CENTER
+                    })
+
+
+            }
+
+            toast
+                .update(idToastLoading, {
+                    render: "Inicio de sesion correcto",
+                    type: "success",
                     isLoading: false,
                     autoClose: 2000,
                     position: toast.POSITION.BOTTOM_CENTER
                 })
 
 
+
+            handleAuth({ ...body.user, token: body.token })
+
+            if (localStorage.getItem('urlRedirect')) {
+                hystory.push(localStorage.getItem('urlRedirect'));
+                localStorage.removeItem('urlRedirect')
+            }
+
+
+        } catch (error) {
+
+            console.log(error)
+
+            toast.update(idToastLoading,
+                {
+                    render: "Hubo un error, hablar con el administrador",
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 2000,
+                    position: toast.POSITION.BOTTOM_CENTER
+                })
+
         }
 
-        toast
-            .update(idToastLoading, {
-                render: "Inicio de sesion correcto",
-                type: "success",
-                isLoading: false,
-                autoClose: 2000,
-                position: toast.POSITION.BOTTOM_CENTER
-            })
 
 
 
-        handleAuth({ ...body.user, token: body.token })
 
-        if (localStorage.getItem('urlRedirect')) {
-            hystory.push(localStorage.getItem('urlRedirect'));
-            localStorage.removeItem('urlRedirect')
-        }
 
 
 

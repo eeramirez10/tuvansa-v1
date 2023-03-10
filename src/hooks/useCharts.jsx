@@ -7,6 +7,9 @@ export const useCharts = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+
+    
+
     const setSucursalData = (sucursal) => {
         setData(sucursal)
         

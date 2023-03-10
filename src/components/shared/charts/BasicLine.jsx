@@ -5,106 +5,53 @@ import {  useCharts } from '../../../hooks/useCharts'
 import { getSucursalesVentas } from '../../../services/charts';
 
 
-const lineOptions = {
-    title: {
-        text: 'Ventas Sucursales '
-    },
+// const lineOptions = {
+//     title: {
+//         text: 'Ventas Sucursales '
+//     },
 
-    subtitle: {
-        text: 'Clickea en un punto para ver el detalle'
-    },
-
-
-  yAxis: {
-        title: {
-            text: ''
-        }
-    },
-
-    xAxis: {
-        type: 'category'
-    },
-
-    // legend: {
-    //     layout: 'vertical',
-    //     align: 'right',
-    //     verticalAlign: 'middle'
-    // },
+//     subtitle: {
+//         text: 'Clickea en un punto para ver el detalle'
+//     },
 
 
+//   yAxis: {
+//         title: {
+//             text: ''
+//         }
+//     },
 
+//     xAxis: {
+//         type: 'category'
+//     },
 
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
-    }
-};
-
-
-const BasicLine = (prop) => {
-
-    const [options, setOptions] = useState(lineOptions);
-    const [year, setYear] = useState("")
-    const { setSucursalData } = useCharts()
+//     // legend: {
+//     //     layout: 'vertical',
+//     //     align: 'right',
+//     //     verticalAlign: 'middle'
+//     // },
 
 
 
 
-    useEffect(() => {
+//     responsive: {
+//         rules: [{
+//             condition: {
+//                 maxWidth: 500
+//             },
+//             chartOptions: {
+//                 legend: {
+//                     layout: 'horizontal',
+//                     align: 'center',
+//                     verticalAlign: 'bottom'
+//                 }
+//             }
+//         }]
+//     }
+// };
 
 
-        getSucursalesVentas()
-        .then(({ data }) => {
-
-       
-
-        
-            setYear(data[0].data[0].year)
-
-
-
-            setOptions( o => ({
-                ...o,
-                title:{
-                    text: `Ventas Sucursales - ${data[0].data[0].year}`
-                },
-                series: data
-
-            }))
-
-          
-
-        })
-
-  
-
-
-
-
-    }, [])
-
-    const handleOnClick  = ({ point }) => {
-
-
-        const { name:month, series, color } = point;
-
-        const { name } = series;
-
-    
-        setSucursalData({month, name, color, year})
-
-    }
-
+const BasicLine = ({ options, handleOnClick }) => {
 
 
 
