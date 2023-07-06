@@ -1,8 +1,10 @@
 
 const URI = "http://localhost:3000/api/"
 
+const URIPROD = "https://backend-proscai.herokuapp.com/api/"
 
-const URI_PROD = "https://backend-proscai.herokuapp.com/api/"
+
+const URI_PROD = URIPROD;
 export const fetchSinToken = (endpoint, params, data, method = 'GET', signal) => {
 
     params = params ? `?${new URLSearchParams(params)}` : '';

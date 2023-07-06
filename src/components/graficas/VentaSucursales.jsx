@@ -22,21 +22,21 @@ const lineOptions = {
 
     xAxis: {
         type: 'category',
-        categories: [
-            'Ene',
-            'Feb',
-            'Mar',
-            'Abr',
-            'May',
-            'Jun',
-            "Jul",
-            "Ago",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dic",
+        // categories: [
+        //     'Ene',
+        //     'Feb',
+        //     'Mar',
+        //     'Abr',
+        //     'May',
+        //     'Jun',
+        //     "Jul",
+        //     "Ago",
+        //     "Sep",
+        //     "Oct",
+        //     "Nov",
+        //     "Dic",
             
-        ]
+        // ]
 
     },
 
@@ -95,10 +95,10 @@ const VentaSucursales = () => {
                     },
                     series: [
                         ...data,
-                        {
-                            name:"",
-                            data:[null,null,null,null,null,null,null,null,null,null,null,null]
-                        }
+                        // {
+                        //     name:"",
+                        //     data:[null,null,null,null,null,null,null,null,null,null,null,null]
+                        // }
                     ]
 
                 }))

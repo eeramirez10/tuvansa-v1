@@ -47,6 +47,8 @@ const UploadFile = ({ name }) => {
 
         setFileUploaded(true)
 
+        console.log(file)
+
         toast.success(body.msg,{ position:"bottom-center", hideProgressBar:true, autoClose:1000 })
 
         // console.log(body)
@@ -69,15 +71,17 @@ const UploadFile = ({ name }) => {
                 ref={fileInputRef}
             />
             <IconButton
-                color="secondary"
+                
                 aria-label="upload file"
                 component="span"
-                size='small'
+                size="small"
                 onClick={() => {
                     fileInputRef.current.click();
                 }}
             >
+
                 <AttachFileIcon />
+
             </IconButton>
 
 
