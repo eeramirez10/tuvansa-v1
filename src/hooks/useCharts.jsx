@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import ChartContext from '../context/ChartContext'
 
+
 export const useCharts = () => {
 
     const { data, setData } = useContext(ChartContext)
@@ -11,8 +12,16 @@ export const useCharts = () => {
     
 
     const setSucursalData = (sucursal) => {
+
+        console.log(data)
         setData(sucursal)
         
+    }
+
+    const setSucursalAnoData = async () => {
+ 
+
+       console.log(data)
     }
     
 

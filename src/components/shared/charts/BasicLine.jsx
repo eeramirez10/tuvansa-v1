@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {  useCharts } from '../../../hooks/useCharts'
+import { useCharts } from '../../../hooks/useCharts'
 import { getSucursalesVentas } from '../../../services/charts';
+import { Button } from '@mui/material';
 
 
 // const lineOptions = {
@@ -57,19 +58,31 @@ const BasicLine = ({ options, handleOnClick }) => {
 
 
     return (
-        <HighchartsReact highcharts={Highcharts} options={{...options,     plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: false
-                },
-                enableMouseTracking: true
-            },
-            series: {
-                events: {
-                    click: handleOnClick
+
+        <>
+
+          
+
+            <HighchartsReact highcharts={Highcharts} options={{
+                ...options, plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: false
+                        },
+                        enableMouseTracking: true
+                    },
+                    series: {
+                        events: {
+                            click: handleOnClick
+                        }
+                    }
                 }
-            }
-        }}} />
+            }} />
+
+
+
+        </>
+
     )
 }
 

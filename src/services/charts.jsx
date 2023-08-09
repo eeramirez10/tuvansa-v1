@@ -57,3 +57,21 @@ export const getAcumulado = async ({sucursal = "all", year = ""}) => {
 
 
 }
+
+
+export const getVentaAnualSucursal = async ({sucursal}) => {
+
+   
+
+    const endpoint = 'charts/sucursal';
+
+    const resp = await fetchSinToken(endpoint, {sucursal});
+
+    const body = await resp.json();
+
+
+
+    return body;
+
+
+}

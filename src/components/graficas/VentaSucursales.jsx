@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useCharts } from '../../hooks/useCharts';
-import { getSucursalesVentas } from '../../services/charts';
+import { getSucursalesVentas, getVentaAnualSucursal } from '../../services/charts';
 import BasicLine from '../shared/charts/BasicLine';
+import { Box, Button, Container, Skeleton } from '@mui/material';
+import { SelectUI } from '../shared/SelectUI';
+import { error } from 'highcharts';
 
 
 const lineOptions = {
@@ -14,6 +17,7 @@ const lineOptions = {
     },
 
 
+
     yAxis: {
         title: {
             text: ''
@@ -22,21 +26,21 @@ const lineOptions = {
 
     xAxis: {
         type: 'category',
-        // categories: [
-        //     'Ene',
-        //     'Feb',
-        //     'Mar',
-        //     'Abr',
-        //     'May',
-        //     'Jun',
-        //     "Jul",
-        //     "Ago",
-        //     "Sep",
-        //     "Oct",
-        //     "Nov",
-        //     "Dic",
-            
-        // ]
+        categories: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+
+        ]
 
     },
 
@@ -67,6 +71,15 @@ const lineOptions = {
     }
 };
 
+const sucursales = [
+    { name: "Mexico", value: "01" },
+    { name: "Monterrey", value: "02" },
+    { name: "Veracruz", value: "03" },
+    { name: "Mexicali", value: "04" },
+    { name: "Queretaro", value: "05" },
+    { name: "Cancun", value: "06" },
+]
+
 
 
 
@@ -74,11 +87,66 @@ const VentaSucursales = () => {
 
     const [options, setOptions] = useState(lineOptions);
     const [year, setYear] = useState("")
-    const { setSucursalData } = useCharts()
+    const { setSucursalData,  setIsLoading, isLoading } = useCharts()
+
+
+
+    const [sucursal, setSucursal] = React.useState('');
+
+    const handleChange = (event) => {
+        setSucursal(event.target.value);
+        console.log(sucursal)
+    };
 
 
     useEffect(() => {
 
+        if (sucursal) {
+
+            setIsLoading(true)
+
+
+            getVentaAnualSucursal({ sucursal })
+                .then(({ data, sucursal }) => {
+
+                    setOptions(o => ({
+                        ...o,
+                        title: {
+                            text: `Ventas anuales ${sucursal} `
+                        },
+                        series: [
+                            ...data,
+                            // {
+                            //     name:"",
+                            //     data:[null,null,null,null,null,null,null,null,null,null,null,null]
+                            // }
+                        ]
+
+                    }))
+
+
+                    setIsLoading(false)
+
+
+                })
+                .catch( error => {
+                    console.log(error)
+                    setIsLoading(false)
+
+                })
+                .finally(() => setIsLoading(false))
+
+
+        }
+
+
+
+    }, [sucursal])
+
+
+    useEffect(() => {
+
+        setIsLoading(true)
 
         getSucursalesVentas()
             .then(({ data }) => {
@@ -103,6 +171,8 @@ const VentaSucursales = () => {
 
                 }))
 
+                setIsLoading(false)
+
 
 
             })
@@ -112,21 +182,99 @@ const VentaSucursales = () => {
 
     const handleOnClick = ({ point }) => {
 
+        if (sucursal) return
 
         const { name: month, series, color } = point;
 
+      
+
         const { name } = series;
 
+       
 
-        setSucursalData({ month, name, color, year })
+
+
+        setSucursalData({ month, name , color, year })
+
+    }
+
+    const handleClickSucursal = async () => {
+
+        setIsLoading(true)
+
+      
+        setSucursal("")
+        getSucursalesVentas()
+            .then(({ data }) => {
+
+
+                setYear(data[0].data[0].year)
+
+                console.log(data)
+
+                setOptions(o => ({
+                    ...o,
+                    title: {
+                        text: `Ventas Sucursales - ${data[0].data[0].year}`
+                    },
+                    series: [
+                        ...data,
+                        // {
+                        //     name:"",
+                        //     data:[null,null,null,null,null,null,null,null,null,null,null,null]
+                        // }
+                    ]
+
+                }))
+
+                setIsLoading(false)
+
+
+
+            })
+
+
 
     }
 
 
 
-
     return (
-        <BasicLine options={options} handleOnClick={handleOnClick} />
+
+        <>
+            {
+                isLoading ?
+
+                    <Skeleton variant="rectangular" width={600} height={400} />
+
+                    :
+
+                    <>
+
+                        <Box sx={{ width:"10", display: "flex", justifyContent: "space-between", alignContent:"center", background: "#fff" }}>
+
+                            <Button variant="contained" size="small" onClick={handleClickSucursal}>Ventas Sucursales</Button>
+
+
+                            <SelectUI label="Sucursales" value={sucursal} options={sucursales} handleChange={handleChange} />
+
+
+
+
+                        </Box>
+
+
+                        <BasicLine options={options} handleOnClick={handleOnClick} />
+
+                    </>
+
+            }
+
+
+
+
+        </>
+
     )
 }
 
