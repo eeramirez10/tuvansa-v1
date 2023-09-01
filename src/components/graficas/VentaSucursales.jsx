@@ -72,12 +72,12 @@ const lineOptions = {
 };
 
 const sucursales = [
-    { name: "Mexico", value: "01" },
-    { name: "Monterrey", value: "02" },
-    { name: "Veracruz", value: "03" },
-    { name: "Mexicali", value: "04" },
-    { name: "Queretaro", value: "05" },
-    { name: "Cancun", value: "06" },
+    { name: "Mexico", value: 1 },
+    { name: "Monterrey", value: 2 },
+    { name: "Veracruz", value: 3 },
+    { name: "Mexicali", value: 4},
+    { name: "Queretaro", value: 5 },
+    { name: "Cancun", value: 6 },
 ]
 
 
@@ -108,6 +108,8 @@ const VentaSucursales = () => {
 
             getVentaAnualSucursal({ sucursal })
                 .then(({ data, sucursal }) => {
+
+                    console.log(data)
 
                     setOptions(o => ({
                         ...o,
@@ -142,6 +144,8 @@ const VentaSucursales = () => {
 
 
     }, [sucursal])
+
+
 
 
     useEffect(() => {
@@ -182,7 +186,7 @@ const VentaSucursales = () => {
 
     const handleOnClick = ({ point }) => {
 
-        if (sucursal) return
+      
 
         const { name: month, series, color } = point;
 
@@ -194,7 +198,7 @@ const VentaSucursales = () => {
 
 
 
-        setSucursalData({ month, name , color, year })
+        setSucursalData({ month, name: sucursal ? sucursal : name , color, year })
 
     }
 
@@ -206,6 +210,8 @@ const VentaSucursales = () => {
         setSucursal("")
         getSucursalesVentas()
             .then(({ data }) => {
+
+                console.log(data)
 
 
                 setYear(data[0].data[0].year)

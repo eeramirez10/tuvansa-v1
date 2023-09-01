@@ -123,6 +123,11 @@ const Column = ({height, width }) => {
 
         if (sucursal) {
 
+           
+
+            console.log(sucursal)
+
+
             setIsLoading(true)
 
             const sucursales = {
@@ -151,7 +156,7 @@ const Column = ({height, width }) => {
                     setOptions({
                         ...options,
                         title:{
-                            text: `${sucursal.name} ${sucursal.month}, ${sucursal.year}`
+                            text: `Ventas por Agente - ${sucursal.name} ${sucursal.month}, ${sucursal.year}`
 
                         },
 
@@ -214,7 +219,10 @@ const Column = ({height, width }) => {
 
                             
                             options={{
-                                ...options, plotOptions: {
+                                ...options, 
+
+                                
+                                plotOptions: {
                                     series: {
                                         events: {
                                             click: function ({ point }) {

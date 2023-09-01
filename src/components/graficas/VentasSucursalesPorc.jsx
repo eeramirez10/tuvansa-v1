@@ -273,7 +273,7 @@ const initialOptions = {
     // }
 }
 
-const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
 
@@ -285,14 +285,14 @@ const VentasSucursalesPorc = () => {
 
     const [options, setOptions] = useState(initialOptions);
 
-    const { data:sucursal } = useCharts()
+    const { data: sucursal } = useCharts()
 
-   
 
-    
+
+
     useEffect(() => {
 
-   
+
 
         getSucursalesVentas()
             .then(({ data }) => {
@@ -300,26 +300,26 @@ const VentasSucursalesPorc = () => {
 
                 console.log(sucursal.month)
 
-                let monthData = data.map( suc =>(
+                let monthData = data.map(suc => (
                     [suc.name,
-                    suc.data.filter( data => data.name === (sucursal.month ? sucursal.month : months[month])).map ( data => data.y)[0]]
-                
-                ) );
+                    suc.data.filter(data => data.name === (sucursal.month ? sucursal.month : months[month])).map(data => data.y)[0]]
+
+                ));
 
                 console.log(monthData)
 
                 setOptions(o => ({
                     ...o,
                     title: {
-                        text: `${sucursal.month ? sucursal.month : months[month]} - ${data[0].data[0].year}`
+                        text: ` Porcentaje de ventas obtenido en el mes -  ${sucursal.month ? sucursal.month : months[month]} - ${data[0].data[0].year}`
                     },
                     series: {
-                        name:"Total",
-                        data:  monthData,
+                        name: "Total",
+                        data: monthData,
                     }
-                       
 
-                    
+
+
 
                 }))
 
@@ -335,7 +335,11 @@ const VentasSucursalesPorc = () => {
 
 
     return (
+    <>
+        
         <Pie options={options} />
+
+    </>
     )
 }
 

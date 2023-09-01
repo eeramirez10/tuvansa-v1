@@ -326,7 +326,7 @@ const VentasFamilia = ({height, width}) => {
                     setOptions(options => ({
                         ...options,
                         title: {
-                            text: `${sucursal.name} ${sucursal.month}, ${sucursal.year}`
+                            text: ` Ventas por familia -  ${sucursal.name} ${sucursal.month}, ${sucursal.year}`
 
                         },
                         series: [{

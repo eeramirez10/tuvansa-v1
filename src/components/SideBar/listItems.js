@@ -31,6 +31,13 @@ export const mainListItems = (
             <ListItemText primary="Graficas" />
         </ListItemButton>
 
+        <ListItemButton component={ Link } to="/chartsbi">
+            <ListItemIcon>
+                <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Graficas BI" />
+        </ListItemButton>
+
         <ListItemButton  component={ Link } to="/embarques">
             <ListItemIcon>
                 <PeopleIcon />

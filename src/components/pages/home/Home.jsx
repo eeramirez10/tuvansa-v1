@@ -23,6 +23,7 @@ import esLocale from 'date-fns/locale/es'
 import Inventarios from '../inventarios/Inventarios';
 import InventarioDetalle from '../inventarios/InventarioDetalle';
 import { ChartProvider } from '../../../context/ChartContext';
+import ChartsBi from '../chartsbi/ChartsBi';
 
 const mdTheme = createTheme();
 
@@ -72,8 +73,12 @@ const Home = () => {
                 <ChartProvider>
 
                   <Route exact path="/charts" component={Charts} title="Charts" />
+
+                  <Route exact path="/chartsbi" component={ChartsBi} title="Charts" />
                   
                 </ChartProvider>
+
+                
 
 
 
